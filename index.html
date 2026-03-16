@@ -1,0 +1,1340 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>SEER AMS · National Infrastructure Intelligence Platform · NST2</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Exo+2:wght@100;200;300;400;600;800;900&family=Rajdhani:wght@300;400;500;600;700&display=swap');
+:root{
+  --void:#00060e;--deep:#000d1a;--surface:#010f1e;--panel:rgba(0,12,24,0.92);
+  --b1:rgba(0,180,255,0.1);--b2:rgba(0,255,180,0.08);
+  --c1:#00b4ff;--c2:#00ffb4;--c3:#ffaa00;--c4:#ff3d6e;--c5:#9f6fff;
+  --tx:#9ecde6;--txm:#2e5c7a;--txd:#1a3a52;--wh:#dff0ff;
+  --gc1:0 0 36px rgba(0,180,255,0.22);--gc2:0 0 36px rgba(0,255,180,0.22);
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+body{background:var(--void);color:var(--tx);font-family:'Rajdhani',sans-serif;overflow-x:hidden;cursor:none;}
+body::after{content:'';position:fixed;inset:0;background:repeating-linear-gradient(0deg,transparent,transparent 3px,rgba(0,180,255,.005) 3px,rgba(0,180,255,.005) 4px);pointer-events:none;z-index:9990;}
+::-webkit-scrollbar{width:3px;}::-webkit-scrollbar-thumb{background:var(--c1);}
+#cr{position:fixed;width:10px;height:10px;background:var(--c1);clip-path:polygon(50% 0,100% 50%,50% 100%,0 50%);pointer-events:none;z-index:9999;transform:translate(-50%,-50%);transition:background .2s,transform .12s;}
+#cro{position:fixed;width:28px;height:28px;border:1px solid rgba(0,180,255,.4);pointer-events:none;z-index:9998;transform:translate(-50%,-50%);transition:width .18s,height .18s,border-color .2s;}
+#pb{position:fixed;top:0;left:0;height:1px;background:linear-gradient(90deg,var(--c1),var(--c2),var(--c5));z-index:9997;box-shadow:0 0 8px var(--c1);}
+/* NAV */
+nav{position:fixed;top:0;left:0;right:0;z-index:500;display:flex;align-items:center;justify-content:space-between;padding:14px 48px;background:linear-gradient(to bottom,rgba(0,6,14,.97),transparent);border-bottom:1px solid rgba(0,180,255,.05);}
+.nl{font-family:'Share Tech Mono',monospace;font-size:12px;letter-spacing:5px;color:var(--c1);}
+.nl span{color:var(--c2);margin-left:6px;}
+.nlinks{display:flex;gap:28px;list-style:none;}
+.nlinks a{font-family:'Share Tech Mono',monospace;font-size:9px;letter-spacing:3px;color:var(--txm);text-decoration:none;text-transform:uppercase;transition:color .25s;}
+.nlinks a:hover{color:var(--c1);}
+.nav-sys{display:flex;gap:12px;align-items:center;}
+.nsd{width:6px;height:6px;clip-path:polygon(50% 0,100% 50%,50% 100%,0 50%);}
+.nsd1{background:var(--c4);box-shadow:0 0 6px var(--c4);animation:sdp 2s ease infinite;}
+.nsd2{background:var(--c3);box-shadow:0 0 6px var(--c3);animation:sdp 2s .4s ease infinite;}
+.nsd3{background:var(--c2);box-shadow:0 0 6px var(--c2);animation:sdp 2s .8s ease infinite;}
+@keyframes sdp{0%,100%{opacity:1;}50%{opacity:.25;}}
+@keyframes spin{from{transform:rotate(0);}to{transform:rotate(360deg);}}
+@keyframes fup{from{opacity:0;transform:translateY(28px);}to{opacity:1;transform:translateY(0);}}
+/* REVEAL */
+.rv{opacity:0;transform:translateY(40px);transition:opacity .85s ease,transform .85s ease;}
+.rv.on{opacity:1;transform:translateY(0);}
+.rvl{opacity:0;transform:translateX(-44px);transition:opacity .85s ease,transform .85s ease;}
+.rvl.on{opacity:1;transform:translateX(0);}
+.rvr{opacity:0;transform:translateX(44px);transition:opacity .85s ease,transform .85s ease;}
+.rvr.on{opacity:1;transform:translateX(0);}
+/* SECTIONS */
+.sec{padding:120px 56px;max-width:1380px;margin:0 auto;}
+.sec-tag{font-family:'Share Tech Mono',monospace;font-size:9px;letter-spacing:6px;color:var(--c1);text-transform:uppercase;margin-bottom:12px;display:flex;align-items:center;gap:12px;}
+.sec-tag::before{content:'[';color:var(--txm);}
+.sec-tag::after{content:']';color:var(--txm);}
+.sec-h{font-family:'Exo 2',sans-serif;font-size:clamp(26px,4vw,58px);font-weight:900;color:var(--wh);line-height:1.0;margin-bottom:18px;letter-spacing:-1px;}
+.sec-p{font-size:15px;line-height:1.9;color:var(--txm);max-width:560px;font-weight:400;}
+.c1{color:var(--c1);}.c2{color:var(--c2);}.c3{color:var(--c3);}.c4{color:var(--c4);}.c5{color:var(--c5);}.wh{color:var(--wh);}
+.hr{height:1px;background:linear-gradient(90deg,transparent,var(--b1),transparent);max-width:1380px;margin:0 auto;}
+.gc{background:var(--panel);border:1px solid var(--b1);position:relative;overflow:hidden;}
+.gc::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(0,180,255,.025),transparent 55%);pointer-events:none;}
+.gc::after{content:'';position:absolute;top:0;right:0;border-top:18px solid rgba(0,180,255,.2);border-left:18px solid transparent;}
+/* BTNS */
+.btn-a{font-family:'Share Tech Mono',monospace;font-size:10px;letter-spacing:3px;padding:14px 38px;background:var(--c1);color:var(--void);font-weight:700;border:none;cursor:none;clip-path:polygon(8px 0,100% 0,calc(100% - 8px) 100%,0 100%);transition:all .3s;}
+.btn-a:hover{background:var(--wh);box-shadow:0 0 36px rgba(0,180,255,.5);}
+.btn-b{font-family:'Share Tech Mono',monospace;font-size:10px;letter-spacing:3px;padding:14px 38px;background:transparent;color:var(--c1);border:1px solid rgba(0,180,255,.3);cursor:none;transition:all .3s;text-decoration:none;display:inline-block;clip-path:polygon(8px 0,100% 0,calc(100% - 8px) 100%,0 100%);}
+.btn-b:hover{background:rgba(0,180,255,.07);border-color:var(--c1);}
+
+/* ════════════════ HERO ════════════════ */
+#hero{min-height:100vh;position:relative;display:flex;align-items:center;justify-content:center;overflow:hidden;}
+#hcanv{position:absolute;inset:0;z-index:0;}
+.hbg{position:absolute;inset:0;background:radial-gradient(ellipse 75% 65% at 50% 42%,rgba(0,22,50,.9),var(--void));}
+.hp-wrap{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);}
+.hp{position:absolute;border-radius:50%;border:1px solid rgba(0,180,255,.07);transform:translate(-50%,-50%);animation:hpulse 6s ease-out infinite;}
+.hp:nth-child(1){width:220px;height:220px;animation-delay:0s;}
+.hp:nth-child(2){width:480px;height:480px;animation-delay:1.2s;}
+.hp:nth-child(3){width:820px;height:820px;animation-delay:2.4s;}
+.hp:nth-child(4){width:1260px;height:1260px;animation-delay:3.6s;}
+@keyframes hpulse{0%{opacity:.6;transform:translate(-50%,-50%) scale(.85);}100%{opacity:0;transform:translate(-50%,-50%) scale(1);}}
+.hi{position:relative;z-index:2;text-align:center;max-width:1000px;padding:0 40px;}
+.h-badge{display:inline-flex;align-items:center;gap:10px;font-family:'Share Tech Mono',monospace;font-size:9px;letter-spacing:5px;color:var(--c1);border:1px solid rgba(0,180,255,.2);padding:7px 20px;margin-bottom:44px;animation:fup 1s ease both;position:relative;}
+.h-badge::before{content:'';position:absolute;top:-1px;left:-1px;width:12px;height:12px;border-top:1px solid var(--c1);border-left:1px solid var(--c1);}
+.h-badge::after{content:'';position:absolute;bottom:-1px;right:-1px;width:12px;height:12px;border-bottom:1px solid var(--c1);border-right:1px solid var(--c1);}
+.bdot{width:6px;height:6px;background:var(--c2);clip-path:polygon(50% 0,100% 50%,50% 100%,0 50%);animation:spin 3s linear infinite;}
+.h-title{font-family:'Exo 2',sans-serif;font-size:clamp(52px,9.5vw,118px);font-weight:900;line-height:.88;letter-spacing:-4px;color:var(--wh);animation:fup 1s .2s ease both;}
+.h-title .t2{display:block;color:var(--c1);text-shadow:0 0 60px rgba(0,180,255,.4),0 0 120px rgba(0,180,255,.18);}
+.h-title .t3{display:block;font-size:clamp(11px,1.7vw,20px);font-weight:300;letter-spacing:10px;color:var(--txm);margin-top:18px;font-family:'Share Tech Mono',monospace;}
+.h-sub{font-size:17px;color:var(--txm);margin:30px auto 50px;line-height:1.75;animation:fup 1s .4s ease both;max-width:640px;font-weight:400;}
+.h-counters{display:flex;gap:50px;justify-content:center;flex-wrap:wrap;animation:fup 1s .6s ease both;margin-bottom:54px;}
+.hcv{font-family:'Exo 2',sans-serif;font-size:clamp(26px,4vw,48px);font-weight:900;color:var(--c1);text-shadow:var(--gc1);line-height:1;}
+.hcl{font-family:'Share Tech Mono',monospace;font-size:9px;letter-spacing:3px;color:var(--txm);margin-top:7px;text-transform:uppercase;}
+.h-ctas{display:flex;gap:16px;justify-content:center;flex-wrap:wrap;animation:fup 1s .8s ease both;}
+
+/* ════════════════ PROBLEM ════════════════ */
+.pg{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--b1);margin-top:68px;}
+.pc{background:var(--surface);padding:42px 36px;position:relative;overflow:hidden;transition:background .3s;cursor:none;}
+.pc:hover{background:#030f20;}
+.pc-line{position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,var(--c1),var(--c2));transform:scaleX(0);transition:transform .4s;transform-origin:left;}
+.pc:hover .pc-line{transform:scaleX(1);}
+.pc-n{font-family:'Exo 2',sans-serif;font-size:62px;font-weight:900;color:rgba(0,180,255,.05);line-height:1;margin-bottom:12px;}
+.pc-t{font-size:16px;font-weight:700;color:var(--wh);margin-bottom:10px;letter-spacing:.5px;}
+.pc-b{font-size:13px;line-height:1.8;color:var(--txm);}
+
+/* ════════════════ ARCHITECTURE ════════════════ */
+.arch{display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:center;}
+.ll{margin-top:38px;}
+.lr{display:grid;grid-template-columns:52px 1fr;gap:20px;align-items:start;padding:22px 0;border-bottom:1px solid var(--b1);transition:all .3s;cursor:none;position:relative;}
+.lr::before{content:'';position:absolute;left:0;top:0;bottom:0;width:1px;background:var(--c1);transform:scaleY(0);transition:transform .3s;transform-origin:top;}
+.lr:hover{padding-left:14px;border-bottom-color:rgba(0,180,255,.25);}
+.lr:hover::before{transform:scaleY(1);}
+.lr-n{font-family:'Exo 2',sans-serif;font-size:24px;font-weight:900;color:rgba(0,180,255,.14);transition:color .3s;}
+.lr:hover .lr-n{color:var(--c1);}
+.lr-t{font-size:14px;font-weight:700;color:var(--wh);margin-bottom:5px;letter-spacing:.5px;}
+.lr-d{font-size:12px;color:var(--txm);line-height:1.65;}
+.tgs{display:flex;gap:6px;flex-wrap:wrap;margin-top:9px;}
+.tg{font-family:'Share Tech Mono',monospace;font-size:8px;letter-spacing:2px;padding:3px 8px;border:1px solid var(--b1);color:var(--txm);text-transform:uppercase;}
+/* orbit vis */
+.ov{position:relative;height:480px;width:100%;}
+.ovc{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:106px;height:106px;border:1px solid var(--c1);display:flex;align-items:center;justify-content:center;font-family:'Share Tech Mono',monospace;font-size:8px;color:var(--c1);letter-spacing:2px;text-align:center;background:var(--deep);box-shadow:var(--gc1),inset 0 0 26px rgba(0,180,255,.07);animation:ocp 3.5s ease infinite;z-index:5;clip-path:polygon(14px 0,100% 0,calc(100% - 14px) 100%,0 100%);}
+@keyframes ocp{0%,100%{box-shadow:var(--gc1),inset 0 0 26px rgba(0,180,255,.07);}50%{box-shadow:0 0 65px rgba(0,180,255,.42),inset 0 0 46px rgba(0,180,255,.16);}}
+.ovr{position:absolute;top:50%;left:50%;border-style:dashed;border-color:rgba(0,180,255,.12);border-radius:50%;border-width:1px;transform:translate(-50%,-50%);animation:rspin linear infinite;}
+.ovr:nth-child(2){width:195px;height:195px;animation-duration:13s;}
+.ovr:nth-child(3){width:310px;height:310px;animation-duration:22s;animation-direction:reverse;border-color:rgba(0,255,180,.08);}
+.ovr:nth-child(4){width:435px;height:435px;animation-duration:34s;border-color:rgba(159,111,255,.08);}
+@keyframes rspin{from{transform:translate(-50%,-50%) rotate(0);}to{transform:translate(-50%,-50%) rotate(360deg);}}
+.ovn{position:absolute;top:-8px;left:50%;margin-left:-8px;width:16px;height:16px;clip-path:polygon(50% 0,100% 50%,50% 100%,0 50%);background:var(--deep);border:1px solid var(--c2);}
+.ovnl{position:absolute;top:22px;left:50%;transform:translateX(-50%);font-family:'Share Tech Mono',monospace;font-size:8px;color:var(--c2);white-space:nowrap;letter-spacing:1px;}
+
+/* ════════════════ MAP SECTION (full viewport) ════════════════ */
+#map-section{
+  width:100%;height:100vh;
+  position:relative;overflow:hidden;
+  display:flex;
+  background:var(--void);
+}
+.map-sec-bg{position:absolute;inset:0;background:repeating-linear-gradient(0deg,transparent,transparent 3px,rgba(0,180,255,.005) 3px,rgba(0,180,255,.005) 4px);pointer-events:none;z-index:1;}
+/* left sidebar */
+#msl{width:280px;flex-shrink:0;background:linear-gradient(to right,rgba(0,6,14,.98),rgba(0,8,18,.92));border-right:1px solid var(--b1);display:flex;flex-direction:column;padding:0;overflow:hidden;z-index:10;}
+.msl-head{padding:18px 22px;border-bottom:1px solid var(--b1);}
+.msl-title{font-family:'Share Tech Mono',monospace;font-size:9px;letter-spacing:4px;color:var(--c1);text-transform:uppercase;margin-bottom:4px;}
+.msl-sub{font-family:'Share Tech Mono',monospace;font-size:8px;letter-spacing:2px;color:var(--txm);}
+.sector-list{flex:1;overflow-y:auto;padding:10px 0;}
+.sector-list::-webkit-scrollbar{width:2px;}
+.sector-list::-webkit-scrollbar-thumb{background:var(--c1);}
+.sl-item{padding:11px 22px;cursor:none;display:flex;align-items:center;gap:12px;transition:background .25s;border-left:2px solid transparent;}
+.sl-item:hover,.sl-item.active{background:rgba(0,180,255,.05);}
+.sl-item.active{border-left-color:var(--c1);}
+.sl-dot{width:9px;height:9px;clip-path:polygon(50% 0,100% 50%,50% 100%,0 50%);flex-shrink:0;}
+.sl-name{font-family:'Exo 2',sans-serif;font-size:11px;font-weight:700;letter-spacing:2px;color:var(--wh);text-transform:uppercase;}
+.sl-val{font-family:'Share Tech Mono',monospace;font-size:8px;color:var(--txm);margin-top:2px;letter-spacing:1px;}
+.sl-bar{height:1px;background:rgba(0,180,255,.06);margin:0 22px;overflow:hidden;}
+.sl-bf{height:100%;width:0;transition:width 1.6s ease;}
+.fin-panel{border-top:1px solid var(--b1);padding:14px 22px;background:rgba(0,180,255,.02);}
+.fp-title{font-family:'Share Tech Mono',monospace;font-size:8px;letter-spacing:3px;color:var(--txm);margin-bottom:10px;text-transform:uppercase;}
+.fp-total{font-family:'Exo 2',sans-serif;font-size:20px;font-weight:900;color:var(--c1);line-height:1;}
+.fp-sub{font-family:'Share Tech Mono',monospace;font-size:7px;color:var(--txm);letter-spacing:2px;margin-bottom:10px;}
+.fp-row{display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;}
+.fp-lbl{font-family:'Share Tech Mono',monospace;font-size:8px;color:var(--txm);letter-spacing:1px;}
+.fp-val{font-family:'Share Tech Mono',monospace;font-size:9px;}
+.fp-bt{flex:1;height:3px;background:rgba(0,180,255,.07);margin:0 7px;overflow:hidden;}
+.fp-bf{height:100%;width:0;transition:width 1.8s ease;}
+/* map center */
+#mcenter{flex:1;position:relative;overflow:hidden;}
+#map-canvas{position:absolute;inset:0;width:100%;height:100%;}
+#ov-canvas{position:absolute;inset:0;width:100%;height:100%;}
+/* edit toolbar */
+#edit-bar{
+  position:absolute;top:16px;left:50%;transform:translateX(-50%);
+  display:flex;gap:8px;align-items:center;z-index:50;
+  background:rgba(0,6,14,.92);border:1px solid var(--b1);
+  padding:8px 16px;
+  clip-path:polygon(8px 0,100% 0,calc(100% - 8px) 100%,0 100%);
+}
+.eb-label{font-family:'Share Tech Mono',monospace;font-size:8px;letter-spacing:3px;color:var(--txm);}
+.eb-btn{font-family:'Share Tech Mono',monospace;font-size:8px;letter-spacing:2px;padding:5px 12px;border:1px solid var(--b1);background:transparent;color:var(--txm);cursor:none;transition:all .2s;clip-path:polygon(4px 0,100% 0,calc(100% - 4px) 100%,0 100%);}
+.eb-btn:hover,.eb-btn.active{background:rgba(0,180,255,.1);color:var(--c1);border-color:rgba(0,180,255,.35);}
+.eb-btn.danger{border-color:rgba(255,61,110,.25);color:var(--c4);}
+.eb-btn.danger:hover{background:rgba(255,61,110,.08);color:var(--c4);border-color:var(--c4);}
+.eb-sep{width:1px;height:20px;background:var(--b1);}
+/* map hint */
+#map-hint{position:absolute;bottom:16px;left:50%;transform:translateX(-50%);font-family:'Share Tech Mono',monospace;font-size:8px;letter-spacing:3px;color:var(--txm);z-index:50;}
+/* right panel */
+#msr{width:360px;flex-shrink:0;background:linear-gradient(to left,rgba(0,6,14,.98),rgba(0,8,18,.92));border-left:1px solid var(--b1);display:flex;flex-direction:column;overflow:hidden;z-index:10;}
+.msr-head{padding:18px 22px;border-bottom:1px solid var(--b1);}
+.msr-title{font-family:'Share Tech Mono',monospace;font-size:9px;letter-spacing:4px;color:var(--c1);text-transform:uppercase;margin-bottom:4px;}
+.msr-sub{font-family:'Share Tech Mono',monospace;font-size:8px;letter-spacing:2px;color:var(--txm);}
+#detail-panel{flex:1;overflow-y:auto;padding:18px 20px;}
+#detail-panel::-webkit-scrollbar{width:2px;}
+#detail-panel::-webkit-scrollbar-thumb{background:var(--c1);}
+.dp-idle{display:flex;flex-direction:column;align-items:center;justify-content:center;height:100%;text-align:center;gap:12px;font-family:'Share Tech Mono',monospace;font-size:9px;color:var(--txm);letter-spacing:2px;line-height:1.9;}
+.dp-idle-ic{width:56px;height:56px;border:1px solid var(--b1);display:flex;align-items:center;justify-content:center;font-size:9px;color:var(--txm);letter-spacing:2px;animation:ocp 3s ease infinite;clip-path:polygon(12px 0,100% 0,calc(100% - 12px) 100%,0 100%);}
+.dp-sname{font-family:'Exo 2',sans-serif;font-size:18px;font-weight:900;color:var(--wh);letter-spacing:2px;margin-bottom:3px;line-height:1.1;}
+.dp-ssub{font-family:'Share Tech Mono',monospace;font-size:8px;letter-spacing:3px;color:var(--txm);margin-bottom:14px;}
+.dp-tag{display:inline-block;font-family:'Share Tech Mono',monospace;font-size:8px;letter-spacing:3px;padding:3px 10px;border:1px solid;margin-bottom:16px;clip-path:polygon(4px 0,100% 0,calc(100% - 4px) 100%,0 100%);}
+.dp-section{margin-bottom:16px;}
+.dp-stitle{font-family:'Share Tech Mono',monospace;font-size:7px;letter-spacing:4px;color:var(--txm);text-transform:uppercase;margin-bottom:8px;padding-bottom:5px;border-bottom:1px solid var(--b1);}
+.dp-kv{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:7px;gap:10px;}
+.dp-k{font-family:'Share Tech Mono',monospace;font-size:8px;color:var(--txm);letter-spacing:1px;flex-shrink:0;max-width:48%;line-height:1.4;}
+.dp-v{font-family:'Exo 2',sans-serif;font-size:12px;font-weight:700;text-align:right;line-height:1.3;}
+.dp-bw{margin-bottom:9px;}
+.dp-blbl{display:flex;justify-content:space-between;font-family:'Share Tech Mono',monospace;font-size:7px;color:var(--txm);margin-bottom:4px;letter-spacing:1px;}
+.dp-bt{height:3px;background:rgba(0,180,255,.08);}
+.dp-bf{height:100%;width:0;transition:width 1.4s ease;}
+.dp-math{background:rgba(0,180,255,.025);border:1px solid var(--b1);padding:14px;margin-bottom:14px;font-family:'Share Tech Mono',monospace;text-align:center;}
+.dp-mf{font-size:15px;color:var(--c1);letter-spacing:3px;margin-bottom:7px;}
+.dp-md{font-size:8px;color:var(--txm);letter-spacing:2px;line-height:1.8;}
+.dp-invest{background:rgba(0,255,180,.025);border:1px solid rgba(0,255,180,.1);padding:14px;margin-bottom:14px;}
+.dp-invest-title{font-family:'Share Tech Mono',monospace;font-size:7px;letter-spacing:4px;color:var(--c2);margin-bottom:10px;}
+.dp-invest-num{font-family:'Exo 2',sans-serif;font-size:24px;font-weight:900;color:var(--c2);}
+.dp-invest-sub{font-family:'Share Tech Mono',monospace;font-size:7px;color:var(--txm);letter-spacing:2px;margin-bottom:8px;}
+.dp-invest-note{font-family:'Share Tech Mono',monospace;font-size:9px;color:var(--txm);line-height:1.8;letter-spacing:.5px;}
+.year-bar{border-top:1px solid var(--b1);padding:10px 20px;display:flex;gap:6px;align-items:center;background:rgba(0,180,255,.015);}
+.yr-lbl{font-family:'Share Tech Mono',monospace;font-size:7px;color:var(--txm);letter-spacing:2px;margin-right:4px;}
+.yr-btn{font-family:'Share Tech Mono',monospace;font-size:8px;letter-spacing:2px;padding:4px 8px;border:1px solid var(--b1);background:transparent;color:var(--txm);cursor:none;transition:all .2s;clip-path:polygon(3px 0,100% 0,calc(100% - 3px) 100%,0 100%);}
+.yr-btn:hover,.yr-btn.active{background:rgba(0,180,255,.1);color:var(--c1);border-color:rgba(0,180,255,.3);}
+.fin-chart-wrap{padding:12px 22px;border-top:1px solid var(--b1);}
+.fc-title{font-family:'Share Tech Mono',monospace;font-size:7px;letter-spacing:3px;color:var(--txm);margin-bottom:8px;}
+#fin-chart{width:100%;height:60px;}
+/* tooltip */
+#ntt{position:fixed;background:rgba(0,5,12,.97);border:1px solid rgba(0,180,255,.3);padding:14px 18px;font-family:'Share Tech Mono',monospace;font-size:9px;color:var(--wh);pointer-events:none;z-index:600;opacity:0;transition:opacity .15s;min-width:190px;clip-path:polygon(0 0,calc(100% - 10px) 0,100% 10px,100% 100%,0 100%);}
+.ntt-h{display:block;font-size:10px;letter-spacing:2px;padding-bottom:6px;margin-bottom:6px;border-bottom:1px solid rgba(0,180,255,.14);}
+.ntt-r{display:flex;justify-content:space-between;gap:14px;margin-top:4px;}
+.ntt-k{color:var(--txm);font-size:8px;letter-spacing:2px;}
+
+/* ════════════════ STATS ════════════════ */
+.sb{background:rgba(1,8,16,.95);border-top:1px solid var(--b1);border-bottom:1px solid var(--b1);padding:68px 56px;}
+.sg{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--b1);max-width:1380px;margin:0 auto;}
+.sx{background:var(--surface);padding:42px 30px;text-align:center;position:relative;overflow:hidden;}
+.sx::after{content:'';position:absolute;bottom:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,var(--c2),transparent);}
+.sv{font-family:'Exo 2',sans-serif;font-size:40px;font-weight:900;color:var(--c1);text-shadow:var(--gc1);display:block;margin-bottom:8px;}
+.sl{font-family:'Share Tech Mono',monospace;font-size:8px;letter-spacing:3px;color:var(--txm);text-transform:uppercase;}
+
+/* ════════════════ MATH ════════════════ */
+.mg{display:grid;grid-template-columns:1fr 1fr;gap:26px;margin-top:68px;}
+.mc{background:var(--panel);border:1px solid var(--b1);padding:44px 38px;position:relative;overflow:hidden;transition:border-color .3s;}
+.mc:hover{border-color:rgba(0,180,255,.28);}
+.mc::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 55% 55% at 50% 0,rgba(0,180,255,.03),transparent);pointer-events:none;}
+.mc-top{position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,var(--c1),var(--c5));opacity:0;transition:opacity .3s;}
+.mc:hover .mc-top{opacity:1;}
+.mf{font-family:'Share Tech Mono',monospace;font-size:clamp(16px,2.4vw,27px);color:var(--c1);letter-spacing:4px;text-shadow:0 0 28px rgba(0,180,255,.28);margin:20px 0;text-align:center;}
+.mn{font-family:'Exo 2',sans-serif;font-size:12px;font-weight:700;color:var(--wh);letter-spacing:4px;margin-bottom:7px;text-transform:uppercase;}
+.md{font-size:13px;color:var(--txm);line-height:1.75;margin-bottom:20px;}
+.mvs{display:flex;flex-direction:column;gap:6px;}
+.mv{display:flex;align-items:center;gap:10px;font-family:'Share Tech Mono',monospace;font-size:10px;}
+.mvk{color:var(--c1);width:28px;flex-shrink:0;font-weight:700;}
+.mvv{color:var(--txm);}
+.mbr{margin-top:20px;}
+.mbb{display:flex;align-items:center;gap:10px;margin-bottom:8px;}
+.mbl{font-family:'Share Tech Mono',monospace;font-size:9px;color:var(--txm);width:50px;flex-shrink:0;letter-spacing:1px;}
+.mbt{flex:1;height:3px;background:rgba(0,180,255,.08);}
+.mbf{height:100%;background:linear-gradient(90deg,var(--c1),var(--c2));width:0;transition:width 1.6s ease;}
+.mbv{font-family:'Share Tech Mono',monospace;font-size:9px;color:var(--c1);width:32px;text-align:right;}
+
+/* ════════════════ DASHBOARD ════════════════ */
+.do{background:rgba(0,5,12,.98);border:1px solid var(--b1);overflow:hidden;margin-top:68px;}
+.dtb{display:flex;align-items:center;justify-content:space-between;padding:11px 22px;background:rgba(0,180,255,.03);border-bottom:1px solid var(--b1);}
+.dtt{font-family:'Share Tech Mono',monospace;font-size:9px;letter-spacing:4px;color:var(--c1);}
+.dts{display:flex;align-items:center;gap:7px;font-family:'Share Tech Mono',monospace;font-size:8px;color:var(--c2);letter-spacing:2px;}
+.dts-d{width:6px;height:6px;clip-path:polygon(50% 0,100% 50%,50% 100%,0 50%);background:var(--c2);animation:spin .8s linear infinite;}
+.db{display:grid;grid-template-columns:1fr 1fr 1fr;grid-template-rows:auto auto;gap:1px;background:var(--b1);}
+.dw{background:var(--surface);padding:24px 20px;}
+.dw-t{font-family:'Share Tech Mono',monospace;font-size:8px;letter-spacing:3px;color:var(--txm);text-transform:uppercase;margin-bottom:14px;}
+.pt{background:rgba(0,180,255,.07);height:5px;overflow:hidden;margin-bottom:6px;}
+.pf{height:100%;background:linear-gradient(90deg,var(--c1),var(--c2));width:0;transition:width 2.2s ease;}
+.plb{display:flex;justify-content:space-between;font-family:'Share Tech Mono',monospace;font-size:8px;color:var(--txm);}
+.gn{font-family:'Exo 2',sans-serif;font-size:26px;font-weight:900;color:var(--c2);text-shadow:var(--gc2);}
+.gns{font-family:'Share Tech Mono',monospace;font-size:8px;color:var(--txm);letter-spacing:2px;}
+.ct{width:100%;border-collapse:collapse;}
+.ct th{font-family:'Share Tech Mono',monospace;font-size:7px;color:var(--txm);letter-spacing:2px;text-align:left;padding:0 0 8px;border-bottom:1px solid var(--b1);}
+.ct td{font-family:'Share Tech Mono',monospace;font-size:9px;color:var(--wh);padding:6px 0;border-bottom:1px solid rgba(0,180,255,.04);}
+.up{color:var(--c2);}.dn{color:var(--c4);}
+.mb2r{display:flex;align-items:center;gap:8px;margin-bottom:8px;}
+.mb2l{font-family:'Share Tech Mono',monospace;font-size:8px;color:var(--txm);width:68px;flex-shrink:0;letter-spacing:1px;}
+.mb2t{flex:1;height:4px;background:rgba(0,180,255,.07);}
+.mb2f{height:100%;width:0;transition:width 1.9s ease;}
+.mb2v{font-family:'Share Tech Mono',monospace;font-size:8px;color:var(--c1);width:32px;text-align:right;}
+.gw{display:flex;flex-direction:column;align-items:center;gap:5px;}
+.gsvg{transform:rotate(-90deg);}
+.gbg{fill:none;stroke:rgba(0,255,180,.08);stroke-width:7;}
+.garc{fill:none;stroke:var(--c2);stroke-width:7;stroke-linecap:butt;stroke-dasharray:283;stroke-dashoffset:283;transition:stroke-dashoffset 2.2s ease;filter:drop-shadow(0 0 5px var(--c2));}
+.garc2{fill:none;stroke:rgba(0,255,180,.12);stroke-width:7;stroke-dasharray:283;}
+.gval{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);text-align:center;}
+.gnum{font-family:'Exo 2',sans-serif;font-size:26px;font-weight:900;color:var(--c2);}
+.gunit{font-family:'Share Tech Mono',monospace;font-size:7px;color:var(--txm);letter-spacing:2px;}
+
+/* ════════════════ NST2 MATRIX ════════════════ */
+.matrix-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:2px;background:var(--b1);margin-top:68px;}
+.mx-card{background:var(--surface);padding:30px 26px;position:relative;overflow:hidden;transition:background .3s;cursor:none;}
+.mx-card:hover{background:#030f20;}
+.mx-card::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,var(--c1),transparent);opacity:0;transition:opacity .3s;}
+.mx-card:hover::before{opacity:1;}
+.mx-pillar{font-family:'Share Tech Mono',monospace;font-size:7px;letter-spacing:4px;color:var(--txm);text-transform:uppercase;margin-bottom:10px;}
+.mx-indicator{font-size:13px;font-weight:700;color:var(--wh);margin-bottom:14px;line-height:1.35;letter-spacing:.3px;}
+.mx-vals{display:flex;gap:0;background:var(--b1);}
+.mx-vb{flex:1;padding:10px 8px;text-align:center;background:var(--deep);}
+.mx-vb+.mx-vb{margin-left:1px;}
+.mx-vnum{font-family:'Exo 2',sans-serif;font-size:15px;font-weight:800;display:block;margin-bottom:2px;}
+.mx-vlbl{font-family:'Share Tech Mono',monospace;font-size:6px;letter-spacing:2px;color:var(--txm);text-transform:uppercase;}
+.mx-unit{font-family:'Share Tech Mono',monospace;font-size:7px;color:var(--txm);margin-top:8px;letter-spacing:2px;}
+.mx-bar{height:2px;background:var(--b1);margin-top:10px;overflow:hidden;}
+.mx-bf{height:100%;background:linear-gradient(90deg,var(--c1),var(--c2));width:0;transition:width 1.8s ease;}
+
+/* ════════════════ AGENTS ════════════════ */
+.ar{display:grid;gap:1px;background:var(--b1);}
+.ar5{grid-template-columns:repeat(5,1fr);}
+.ar4{grid-template-columns:repeat(4,1fr);}
+.ac{background:var(--surface);padding:24px 12px;text-align:center;transition:background .3s,transform .3s;cursor:none;position:relative;overflow:hidden;}
+.ac::before{content:'';position:absolute;bottom:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,var(--c1),transparent);opacity:0;transition:opacity .3s;}
+.ac:hover{background:#031220;transform:translateY(-4px);}
+.ac:hover::before{opacity:1;}
+.ac-ic{font-family:'Share Tech Mono',monospace;font-size:8px;color:var(--c1);letter-spacing:3px;margin-bottom:8px;display:block;opacity:.7;transition:opacity .3s;}
+.ac:hover .ac-ic{opacity:1;}
+.ac-n{font-family:'Exo 2',sans-serif;font-size:10px;font-weight:700;letter-spacing:2px;color:var(--wh);}
+.ac-t{font-family:'Share Tech Mono',monospace;font-size:7px;color:var(--txm);margin-top:3px;letter-spacing:1px;}
+.aroot{background:var(--panel);border:1px solid var(--c1);padding:18px 44px;display:table;margin:0 auto;font-family:'Share Tech Mono',monospace;font-size:11px;color:var(--c1);letter-spacing:4px;box-shadow:var(--gc1);clip-path:polygon(12px 0,100% 0,calc(100% - 12px) 100%,0 100%);}
+.aline{width:1px;height:48px;background:var(--b1);margin:0 auto;position:relative;}
+.aline::after{content:'';position:absolute;bottom:0;left:50%;transform:translateX(-50%);border-left:5px solid transparent;border-right:5px solid transparent;border-top:7px solid rgba(0,180,255,.18);}
+.albl{font-family:'Share Tech Mono',monospace;font-size:7px;letter-spacing:4px;color:var(--txd);text-align:center;padding:10px 0;background:var(--void);}
+
+/* ════════════════ ROI ════════════════ */
+.rg{display:grid;grid-template-columns:repeat(3,1fr);gap:2px;background:var(--b1);margin-top:68px;}
+.rc{background:var(--surface);padding:42px 32px;position:relative;overflow:hidden;transition:background .3s;cursor:none;}
+.rc:hover{background:#031220;}
+.rc::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,var(--c1),transparent);opacity:0;transition:opacity .3s;}
+.rc:hover::before{opacity:1;}
+.rc-ico{width:34px;height:34px;border:1px solid var(--b1);display:flex;align-items:center;justify-content:center;margin-bottom:20px;font-family:'Share Tech Mono',monospace;font-size:11px;color:var(--c1);clip-path:polygon(6px 0,100% 0,calc(100% - 6px) 100%,0 100%);}
+.rc-t{font-size:15px;font-weight:700;color:var(--wh);margin-bottom:11px;line-height:1.3;letter-spacing:.3px;}
+.rc-b{font-size:13px;color:var(--txm);line-height:1.8;}
+.rc-tag{margin-top:16px;font-family:'Share Tech Mono',monospace;font-size:8px;color:var(--c2);letter-spacing:3px;}
+
+/* ════════════════ FINAL ════════════════ */
+#final{position:relative;overflow:hidden;padding:160px 56px;text-align:center;}
+#fcanv{position:absolute;inset:0;z-index:0;}
+.fi{position:relative;z-index:2;}
+.f-eye{font-family:'Share Tech Mono',monospace;font-size:9px;letter-spacing:6px;color:var(--c2);margin-bottom:24px;text-transform:uppercase;}
+.f-title{font-family:'Exo 2',sans-serif;font-size:clamp(28px,5.2vw,72px);font-weight:900;color:var(--wh);line-height:1.05;margin-bottom:20px;}
+.f-title em{color:var(--c1);font-style:normal;text-shadow:0 0 55px rgba(0,180,255,.32);}
+.f-sub{font-size:16px;color:var(--txm);max-width:620px;margin:0 auto 52px;line-height:1.8;}
+.xn{display:flex;gap:11px;flex-wrap:wrap;justify-content:center;margin:44px 0;}
+.xnb{background:var(--panel);border:1px solid var(--b1);padding:11px 20px;font-family:'Share Tech Mono',monospace;font-size:8px;letter-spacing:3px;color:var(--txm);cursor:none;transition:all .3s;clip-path:polygon(5px 0,100% 0,calc(100% - 5px) 100%,0 100%);}
+.xnb:hover{color:var(--c1);border-color:rgba(0,180,255,.35);}
+
+/* ════════════════ FOOTER ════════════════ */
+footer{background:rgba(0,5,12,.99);border-top:1px solid var(--b1);padding:72px 56px 36px;text-align:center;}
+.ft-logo{font-family:'Exo 2',sans-serif;font-size:clamp(17px,3vw,32px);font-weight:900;color:var(--c1);letter-spacing:6px;margin-bottom:14px;text-shadow:var(--gc1);}
+.ft-sub{font-family:'Share Tech Mono',monospace;font-size:9px;letter-spacing:3px;color:var(--txm);margin-bottom:26px;}
+.ft-ip{font-family:'Share Tech Mono',monospace;font-size:8px;letter-spacing:2px;color:var(--txd);max-width:680px;margin:0 auto;line-height:1.9;border-top:1px solid var(--b1);padding-top:24px;margin-top:24px;}
+.ft-ip strong{color:var(--txm);}
+.fb{padding:20px 56px;border-top:1px solid var(--b1);display:flex;align-items:center;justify-content:space-between;font-family:'Share Tech Mono',monospace;font-size:8px;color:var(--txd);letter-spacing:2px;}
+
+/* ════════════════ RESPONSIVE ════════════════ */
+@media(max-width:1100px){
+  nav{padding:12px 18px;}.nlinks{display:none;}
+  .sec{padding:80px 20px;}
+  .pg,.arch,.mg,.db,.rg,.matrix-grid{grid-template-columns:1fr;}
+  .sg{grid-template-columns:1fr 1fr;}
+  .ar5,.ar4{grid-template-columns:1fr 1fr;}
+  #map-section{flex-direction:column;height:auto;}
+  #msl,#msr{width:100%;}
+  #mcenter{height:60vh;}
+  .fb{flex-direction:column;gap:10px;padding:18px;}
+}
+</style>
+</head>
+<body>
+<div id="cr"></div>
+<div id="cro"></div>
+<div id="pb"></div>
+<div id="ntt"></div>
+
+<nav>
+  <div class="nl">SEER<span>AMS</span></div>
+  <ul class="nlinks">
+    <li><a href="#problem">Challenge</a></li>
+    <li><a href="#architecture">Platform</a></li>
+    <li><a href="#map-section">Sector Map</a></li>
+    <li><a href="#math">Models</a></li>
+    <li><a href="#dashboard">Dashboard</a></li>
+    <li><a href="#matrix">NST2 Matrix</a></li>
+    <li><a href="#impact">Impact</a></li>
+  </ul>
+  <div class="nav-sys">
+    <div class="nsd nsd1"></div>
+    <div class="nsd nsd2"></div>
+    <div class="nsd nsd3"></div>
+  </div>
+</nav>
+
+<!-- ══════════════════════════════ HERO ══════════════════════════════ -->
+<section id="hero">
+  <div class="hbg"></div>
+  <canvas id="hcanv"></canvas>
+  <div class="hp-wrap"><div class="hp"></div><div class="hp"></div><div class="hp"></div><div class="hp"></div></div>
+  <div class="hi">
+    <div class="h-badge"><span class="bdot"></span>REPUBLIC OF RWANDA &nbsp;|&nbsp; NST2 2024&ndash;2029 &nbsp;|&nbsp; NATIONAL INTELLIGENCE PLATFORM</div>
+    <h1 class="h-title">SEER<span class="t2">AMS</span><span class="t3">FOR NST2 &nbsp;|&nbsp; NATIONAL INFRASTRUCTURE INTELLIGENCE</span></h1>
+    <p class="h-sub">A living, predictive digital twin of Rwanda's national infrastructure. Transforming development planning from static policy documents into real-time operational intelligence.</p>
+    <div class="h-counters">
+      <div><div class="hcv" data-prefix="$" data-target="30" data-suffix="B">$0B</div><div class="hcl">National Investment</div></div>
+      <div><div class="hcv" data-target="63559" data-suffix="B FRW">0</div><div class="hcl">NST2 Financing</div></div>
+      <div><div class="hcv" data-target="200" data-suffix="+">0+</div><div class="hcl">NST2 Projects</div></div>
+      <div><div class="hcv" data-target="5">0</div><div class="hcl">Strategic Pillars</div></div>
+      <div><div class="hcv" data-target="33" data-suffix=" IND">0</div><div class="hcl">Outcome Indicators</div></div>
+    </div>
+    <div class="h-ctas">
+      <button class="btn-a" onclick="document.getElementById('map-section').scrollIntoView({behavior:'smooth'})">Explore Sector Map</button>
+      <a href="#dashboard" class="btn-b">Live Dashboard</a>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════ PROBLEM ══════════════════════════════ -->
+<section class="sec" id="problem">
+  <div class="rv">
+    <div class="sec-tag">The National Challenge</div>
+    <h2 class="sec-h">Rwanda builds fast.<br/>Intelligence must match ambition.</h2>
+    <p class="sec-p">NST2 represents Rwanda's most ambitious transformation programme. Yet the systems governing it remain fragmented, reactive, and incapable of seeing systemic risk before it materialises.</p>
+  </div>
+  <div class="pg">
+    <div class="pc rv"><div class="pc-line"></div><div class="pc-n">01</div><div class="pc-t">Fragmented Decision Architecture</div><p class="pc-b">33 outcome indicators across 5 pillars managed through disconnected ministry systems. Critical interdependencies remain invisible until they become governance failures.</p></div>
+    <div class="pc rv"><div class="pc-line"></div><div class="pc-n">02</div><div class="pc-t">No Predictive Capability</div><p class="pc-b">Infrastructure failures, demand surges, and fiscal overruns are discovered after they occur. Rwanda's development targets require foresight that reactive M&amp;E systems cannot provide.</p></div>
+    <div class="pc rv"><div class="pc-line"></div><div class="pc-n">03</div><div class="pc-t">Unmodelled Investment Risk</div><p class="pc-b">FRW 63,559B in NST2 capital flows without simulation-backed validation. Development banks and sponsors lack the tools to model return across interconnected national systems.</p></div>
+    <div class="pc rv"><div class="pc-line"></div><div class="pc-n">04</div><div class="pc-t">No System-Level Oversight</div><p class="pc-b">Airports, energy grids, logistics corridors, agriculture, and smart cities all interact. Without a national intelligence platform, planners cannot see how one sector cascades across others.</p></div>
+  </div>
+</section>
+<div class="hr"></div>
+
+<!-- ══════════════════════════════ ARCHITECTURE ══════════════════════════════ -->
+<section class="sec" id="architecture">
+  <div class="arch">
+    <div class="rvl">
+      <div class="sec-tag">The Platform</div>
+      <h2 class="sec-h">Seven Layers of<br/>Living Intelligence</h2>
+      <p class="sec-p">SEER AMS constructs a continuously updated digital replica of Rwanda's infrastructure. Each layer compounds the intelligence of the one beneath it.</p>
+      <div class="ll">
+        <div class="lr"><div class="lr-n">01</div><div><div class="lr-t">Raw Data Sources</div><p class="lr-d">Rwanda CAA, RDB, RTDA, MINECOFIN, MININFRA, Sentinel satellites, Landsat, contractor BOQ feeds, NISR datasets</p><div class="tgs"><span class="tg">Government</span><span class="tg">Satellite</span><span class="tg">NISR</span></div></div></div>
+        <div class="lr"><div class="lr-n">02</div><div><div class="lr-t">Geospatial Model</div><p class="lr-d">3D national environment covering all NST2 physical assets: roads, energy plants, airports, corridors, irrigation zones</p><div class="tgs"><span class="tg">GIS</span><span class="tg">3D Terrain</span><span class="tg">Unreal</span></div></div></div>
+        <div class="lr"><div class="lr-n">03</div><div><div class="lr-t">Construction Intelligence</div><p class="lr-d">Full lifecycle simulation of NST2 capital projects: materials, labor deployment, equipment utilisation, budget burn rates</p><div class="tgs"><span class="tg">BOQ Sim</span><span class="tg">Schedule</span><span class="tg">Cost</span></div></div></div>
+        <div class="lr"><div class="lr-n">04</div><div><div class="lr-t">Operations Data Layer</div><p class="lr-d">Live airport ops, energy grid loads, cargo throughput, agricultural production, health sector metrics, education indicators</p><div class="tgs"><span class="tg">Live Ops</span><span class="tg">Energy</span><span class="tg">Agri</span></div></div></div>
+        <div class="lr"><div class="lr-n">05</div><div><div class="lr-t">Infrastructure Simulation</div><p class="lr-d">Parallel scenario modelling across all NST2 sectors: passenger flow, grid resilience, cargo logistics, crop yield forecasts</p><div class="tgs"><span class="tg">Scenario</span><span class="tg">Stress-Test</span><span class="tg">Flow Sim</span></div></div></div>
+        <div class="lr"><div class="lr-n">06</div><div><div class="lr-t">AI Prediction Engine</div><p class="lr-d">GDP contribution forecasting, demand growth modelling, maintenance risk scoring, expansion window identification to 2035</p><div class="tgs"><span class="tg">ML Models</span><span class="tg">Forecasting</span><span class="tg">Risk AI</span></div></div></div>
+        <div class="lr"><div class="lr-n">07</div><div><div class="lr-t">Strategic Intelligence</div><p class="lr-d">Government and investor-grade answers: expansion timing, sector interdependencies, fiscal impact, NST2 milestone risk</p><div class="tgs"><span class="tg">Gov Policy</span><span class="tg">Investor</span><span class="tg">GDP Model</span></div></div></div>
+      </div>
+    </div>
+    <div class="rvr">
+      <div class="ov">
+        <div class="ovr"><div class="ovn"><div class="ovnl">Runway</div></div></div>
+        <div class="ovr" style="border-color:rgba(0,255,180,.1);"><div class="ovn" style="border-color:var(--c3);"><div class="ovnl" style="color:var(--c3);">Energy</div></div></div>
+        <div class="ovr" style="border-color:rgba(159,111,255,.1);"><div class="ovn" style="border-color:var(--c5);"><div class="ovnl" style="color:var(--c5);">Cargo</div></div></div>
+        <div class="ovc">SEER<br/>AI CORE</div>
+      </div>
+    </div>
+  </div>
+</section>
+<div class="hr"></div>
+
+<!-- ══════════════════════════════ SECTOR MAP ══════════════════════════════ -->
+<div id="map-section">
+  <div class="map-sec-bg"></div>
+
+  <!-- LEFT SIDEBAR -->
+  <div id="msl">
+    <div class="msl-head">
+      <div class="msl-title">NST2 Sector Nodes</div>
+      <div class="msl-sub">Click map or list to activate</div>
+    </div>
+    <div class="sector-list" id="sector-list"></div>
+    <div class="fin-chart-wrap">
+      <div class="fc-title">NST2 Annual Financing (FRW Billion)</div>
+      <canvas id="fin-chart"></canvas>
+    </div>
+    <div class="fin-panel">
+      <div class="fp-title">NST2 Financing Structure</div>
+      <div class="fp-total">FRW 63,559B</div>
+      <div class="fp-sub">2024/25 to 2028/29 &nbsp;|&nbsp; 5-Year Total</div>
+      <div class="fp-row"><span class="fp-lbl">Public (57%)</span><div class="fp-bt"><div class="fp-bf" data-w="57" style="background:var(--c1);"></div></div><span class="fp-val" style="color:var(--c1);">36,161B</span></div>
+      <div class="fp-row"><span class="fp-lbl">Private (43%)</span><div class="fp-bt"><div class="fp-bf" data-w="43" style="background:var(--c2);"></div></div><span class="fp-val" style="color:var(--c2);">27,398B</span></div>
+      <div class="fp-row"><span class="fp-lbl">Tax Rev (37%)</span><div class="fp-bt"><div class="fp-bf" data-w="37" style="background:var(--c3);"></div></div><span class="fp-val" style="color:var(--c3);">23,425B</span></div>
+      <div class="fp-row"><span class="fp-lbl">FDI (9%)</span><div class="fp-bt"><div class="fp-bf" data-w="9" style="background:var(--c5);"></div></div><span class="fp-val" style="color:var(--c5);">5,627B</span></div>
+    </div>
+  </div>
+
+  <!-- MAP CANVAS -->
+  <div id="mcenter">
+    <canvas id="map-canvas"></canvas>
+    <canvas id="ov-canvas"></canvas>
+    <div id="edit-bar">
+      <span class="eb-label">MAP EDITOR</span>
+      <div class="eb-sep"></div>
+      <button class="eb-btn active" id="eb-move" onclick="setMode('move',this)">MOVE NODE</button>
+      <button class="eb-btn" id="eb-edit" onclick="setMode('edit',this)">EDIT BORDER</button>
+      <button class="eb-btn" id="eb-add" onclick="setMode('add',this)">ADD POINT</button>
+      <button class="eb-btn" id="eb-del" onclick="setMode('del',this)">DEL POINT</button>
+      <div class="eb-sep"></div>
+      <button class="eb-btn danger" onclick="resetBorder()">RESET</button>
+    </div>
+    <div id="map-hint">HOVER NODES TO PREVIEW &nbsp;|&nbsp; CLICK TO SELECT &nbsp;|&nbsp; DRAG BORDER POINTS TO RESHAPE MAP</div>
+  </div>
+
+  <!-- RIGHT PANEL -->
+  <div id="msr">
+    <div class="msr-head">
+      <div class="msr-title">Sector Intelligence</div>
+      <div class="msr-sub">Select node for full analysis</div>
+    </div>
+    <div id="detail-panel">
+      <div class="dp-idle">
+        <div class="dp-idle-ic">SEER</div>
+        <div>SELECT A SECTOR NODE<br/>ON THE MAP TO VIEW<br/>FULL NST2 INTELLIGENCE<br/><br/><span style="color:var(--c2);">5 SECTORS ACTIVE</span><br/>HOVER FOR PREVIEW<br/>CLICK FOR DEEP ANALYSIS<br/><br/><span style="color:var(--txd);">DRAG BORDER TO RESHAPE<br/>RWANDA MAP OUTLINE</span></div>
+      </div>
+    </div>
+    <div class="year-bar">
+      <span class="yr-lbl">YEAR</span>
+      <button class="yr-btn active" onclick="setYear(0,this)">24/25</button>
+      <button class="yr-btn" onclick="setYear(1,this)">25/26</button>
+      <button class="yr-btn" onclick="setYear(2,this)">26/27</button>
+      <button class="yr-btn" onclick="setYear(3,this)">27/28</button>
+      <button class="yr-btn" onclick="setYear(4,this)">28/29</button>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════ STATS ══════════════════════════════ -->
+<div class="sb">
+  <div class="sg">
+    <div class="sx rv"><span class="sv" data-target="7">0</span><span class="sl">Intelligence Layers</span></div>
+    <div class="sx rv"><span class="sv" data-target="33">0</span><span class="sl">NST2 Outcome Indicators</span></div>
+    <div class="sx rv"><span class="sv" data-prefix="FRW " data-target="63559" data-suffix="B">0</span><span class="sl">Modelled Investment</span></div>
+    <div class="sx rv"><span class="sv" data-target="2029">0</span><span class="sl">Strategy End Year</span></div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════ MATH ══════════════════════════════ -->
+<section class="sec" id="math">
+  <div class="rv">
+    <div class="sec-tag">Mathematical Intelligence</div>
+    <h2 class="sec-h">The Equations That<br/>Drive National Planning</h2>
+    <p class="sec-p">SEER AMS is built on rigorous mathematical models that translate sector data into planning decisions at national scale.</p>
+  </div>
+  <div class="mg">
+    <div class="mc rv">
+      <div class="mc-top"></div>
+      <div class="mn">GDP Contribution Model</div>
+      <p class="md">How NST2 infrastructure investment flows into national economic output. Rwanda targets 9.3% real GDP growth by 2029, with nominal GDP rising from FRW 16,355B to FRW 37,413B.</p>
+      <div class="mf">GDP = C + I + G + (X - M)</div>
+      <div class="mvs">
+        <div class="mv"><span class="mvk">C</span><span class="mvv">Household consumption (driven by wage growth)</span></div>
+        <div class="mv"><span class="mvk">I</span><span class="mvv">Private investment: USD 2.2B (2023) to 4.6B (2029)</span></div>
+        <div class="mv"><span class="mvk">G</span><span class="mvv">Government expenditure across all NST2 sectors</span></div>
+        <div class="mv"><span class="mvk">X-M</span><span class="mvv">Exports USD 3.5B to 7.3B &nbsp;|&nbsp; CAD: -11.8% to -7.9%</span></div>
+      </div>
+      <div class="mbr">
+        <div class="mbb"><span class="mbl">C</span><div class="mbt"><div class="mbf" data-w="58"></div></div><span class="mbv">58%</span></div>
+        <div class="mbb"><span class="mbl">I</span><div class="mbt"><div class="mbf" data-w="22"></div></div><span class="mbv">22%</span></div>
+        <div class="mbb"><span class="mbl">G</span><div class="mbt"><div class="mbf" data-w="14"></div></div><span class="mbv">14%</span></div>
+        <div class="mbb"><span class="mbl">NX</span><div class="mbt"><div class="mbf" data-w="6"></div></div><span class="mbv">6%</span></div>
+      </div>
+    </div>
+    <div class="mc rv">
+      <div class="mc-top"></div>
+      <div class="mn">Exponential Demand Forecast</div>
+      <p class="md">Predicts long-term infrastructure demand for passengers, cargo, energy, and agricultural output using time-series exponential modelling calibrated to NST2 targets.</p>
+      <div class="mf">y = a &middot; e <sup style="font-size:.5em">rt</sup></div>
+      <div class="mvs">
+        <div class="mv"><span class="mvk">y</span><span class="mvv">Future demand: passengers, MW, tonnes, MT/Ha</span></div>
+        <div class="mv"><span class="mvk">a</span><span class="mvv">2023/24 NST2 baseline value</span></div>
+        <div class="mv"><span class="mvk">r</span><span class="mvv">Sector growth rate (Agriculture 6.5% / Industry 10.6%)</span></div>
+        <div class="mv"><span class="mvk">t</span><span class="mvv">Time horizon: 2024 to 2029 (5 years)</span></div>
+      </div>
+      <canvas id="exc" width="400" height="120" style="width:100%;margin-top:22px;"></canvas>
+    </div>
+  </div>
+</section>
+<div class="hr"></div>
+
+<!-- ══════════════════════════════ DASHBOARD ══════════════════════════════ -->
+<section class="sec" id="dashboard">
+  <div class="rv">
+    <div class="sec-tag">Live Intelligence</div>
+    <h2 class="sec-h">SEER Analytics<br/>Dashboard</h2>
+    <p class="sec-p">Real-time infrastructure analytics tracking all NST2 pillars, sector performance, and forecast trajectory in a single unified intelligence console.</p>
+  </div>
+  <div class="do rv">
+    <div class="dtb">
+      <div class="dtt">SEER AMS &nbsp;|&nbsp; NATIONAL INTELLIGENCE CONSOLE &nbsp;|&nbsp; NST2 2024-2029</div>
+      <div class="dts"><span class="dts-d"></span>LIVE &nbsp;&nbsp;NST2 MONITORING ACTIVE</div>
+    </div>
+    <div class="db">
+      <div class="dw">
+        <div class="dw-t">NST2 Project Completion</div>
+        <div style="margin-bottom:10px;"><div class="gn" id="nst-pct">0%</div><div class="gns">200+ Projects &nbsp;|&nbsp; 5 Pillars</div></div>
+        <div class="pt"><div class="pf" id="nst-bar"></div></div>
+        <div class="plb"><span>Phase 1 Active</span><span style="color:var(--c1)">68%</span></div>
+        <div style="margin-top:16px;">
+          <div style="margin-bottom:8px;"><div style="font-family:'Share Tech Mono',monospace;font-size:7px;color:var(--txm);margin-bottom:4px;letter-spacing:2px;">TRANSPORT</div><div class="pt"><div class="pf" data-w="82" style="background:linear-gradient(90deg,var(--c2),var(--c1));"></div></div></div>
+          <div style="margin-bottom:8px;"><div style="font-family:'Share Tech Mono',monospace;font-size:7px;color:var(--txm);margin-bottom:4px;letter-spacing:2px;">ENERGY</div><div class="pt"><div class="pf" data-w="61"></div></div></div>
+          <div style="margin-bottom:8px;"><div style="font-family:'Share Tech Mono',monospace;font-size:7px;color:var(--txm);margin-bottom:4px;letter-spacing:2px;">AGRICULTURE</div><div class="pt"><div class="pf" data-w="55" style="background:linear-gradient(90deg,var(--c2),var(--c3));"></div></div></div>
+          <div><div style="font-family:'Share Tech Mono',monospace;font-size:7px;color:var(--txm);margin-bottom:4px;letter-spacing:2px;">SOCIAL</div><div class="pt"><div class="pf" data-w="44" style="background:linear-gradient(90deg,var(--c3),var(--c4));"></div></div></div>
+        </div>
+      </div>
+      <div class="dw">
+        <div class="dw-t">National GDP Growth Forecast</div>
+        <canvas id="gdpc"></canvas>
+        <div style="display:flex;gap:16px;margin-top:10px;flex-wrap:wrap;">
+          <div><div style="font-family:'Exo 2',sans-serif;font-size:17px;font-weight:800;color:var(--c2);">8.2%</div><div style="font-family:'Share Tech Mono',monospace;font-size:7px;color:var(--txm);letter-spacing:1px;">BASELINE 2023</div></div>
+          <div><div style="font-family:'Exo 2',sans-serif;font-size:17px;font-weight:800;color:var(--c1);">8.3%</div><div style="font-family:'Share Tech Mono',monospace;font-size:7px;color:var(--txm);letter-spacing:1px;">TARGET 2026</div></div>
+          <div><div style="font-family:'Exo 2',sans-serif;font-size:17px;font-weight:800;color:var(--c5);">9.3%</div><div style="font-family:'Share Tech Mono',monospace;font-size:7px;color:var(--txm);letter-spacing:1px;">TARGET 2029</div></div>
+        </div>
+      </div>
+      <div class="dw">
+        <div class="dw-t">Bugesera Airport &nbsp;|&nbsp; Passenger Simulation</div>
+        <div class="gw">
+          <div style="position:relative;width:100px;height:100px;">
+            <svg class="gsvg" width="100" height="100" viewBox="0 0 100 100"><circle class="garc2" cx="50" cy="50" r="40"/><circle class="gbg" cx="50" cy="50" r="40"/><circle class="garc" id="garc" cx="50" cy="50" r="40"/></svg>
+            <div class="gval"><div class="gnum" id="gnum">0</div><div class="gunit">M PAX/YR</div></div>
+          </div>
+          <div style="font-family:'Share Tech Mono',monospace;font-size:8px;color:var(--txm);text-align:center;letter-spacing:2px;margin-top:5px;">CAP: 14M &nbsp;|&nbsp; UTIL: <span style="color:var(--c2);" id="gutl">0%</span></div>
+        </div>
+      </div>
+      <div class="dw">
+        <div class="dw-t">National Energy &nbsp;|&nbsp; MININFRA</div>
+        <canvas id="enc"></canvas>
+        <div class="mb2r" style="margin-top:12px;"><span class="mb2l">Renewable</span><div class="mb2t"><div class="mb2f" data-w="51" style="background:var(--c2);"></div></div><span class="mb2v">51%</span></div>
+        <div class="mb2r"><span class="mb2l">Hydro</span><div class="mb2t"><div class="mb2f" data-w="89" style="background:var(--c1);"></div></div><span class="mb2v">89%</span></div>
+        <div class="mb2r"><span class="mb2l">Electricity</span><div class="mb2t"><div class="mb2f" data-w="91" style="background:var(--c3);"></div></div><span class="mb2v">91%</span></div>
+      </div>
+      <div class="dw">
+        <div class="dw-t">Export + Logistics Throughput</div>
+        <table class="ct">
+          <thead><tr><th>ITEM</th><th>BASELINE</th><th>TARGET</th></tr></thead>
+          <tbody>
+            <tr><td>Goods + Services</td><td>$3,509M</td><td class="up">$7,316M</td></tr>
+            <tr><td>Mining Exports</td><td>$1.1B</td><td class="up">$2.17B</td></tr>
+            <tr><td>Tourism Revenue</td><td>$620M</td><td class="up">$1,100M</td></tr>
+            <tr><td>Private Invest.</td><td>$2.2B</td><td class="up">$4.6B</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="dw">
+        <div class="dw-t">NST2 Sector Intelligence Index</div>
+        <div class="mb2r"><span class="mb2l">Economic</span><div class="mb2t"><div class="mb2f" data-w="82" style="background:linear-gradient(90deg,var(--c1),var(--c2));"></div></div><span class="mb2v">82</span></div>
+        <div class="mb2r"><span class="mb2l">Agri</span><div class="mb2t"><div class="mb2f" data-w="68" style="background:linear-gradient(90deg,var(--c2),var(--c3));"></div></div><span class="mb2v">68</span></div>
+        <div class="mb2r"><span class="mb2l">Energy</span><div class="mb2t"><div class="mb2f" data-w="74" style="background:linear-gradient(90deg,var(--c3),var(--c4));"></div></div><span class="mb2v">74</span></div>
+        <div class="mb2r"><span class="mb2l">Social</span><div class="mb2t"><div class="mb2f" data-w="71" style="background:linear-gradient(90deg,var(--c5),var(--c1));"></div></div><span class="mb2v">71</span></div>
+        <div class="mb2r"><span class="mb2l">Governance</span><div class="mb2t"><div class="mb2f" data-w="60" style="background:linear-gradient(90deg,var(--c1),var(--c5));"></div></div><span class="mb2v">60</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+<div class="hr"></div>
+
+<!-- ══════════════════════════════ NST2 MATRIX ══════════════════════════════ -->
+<section class="sec" id="matrix">
+  <div class="rv">
+    <div class="sec-tag">NST2 Monitoring Matrix</div>
+    <h2 class="sec-h">Outcome Indicators<br/>Tracked in Real Time</h2>
+    <p class="sec-p">SEER AMS ingests the full NST2 M&amp;E Matrix. Every baseline, midterm target, and end-period objective is modelled, tracked, and forecast continuously.</p>
+  </div>
+  <div class="matrix-grid">
+    <div class="mx-card rv"><div class="mx-pillar">Economic &nbsp;|&nbsp; MINECOFIN</div><div class="mx-indicator">Annual Real GDP Growth</div><div class="mx-vals"><div class="mx-vb"><span class="mx-vnum c3">8.2%</span><span class="mx-vlbl">Baseline</span></div><div class="mx-vb"><span class="mx-vnum c1">8.3%</span><span class="mx-vlbl">2026</span></div><div class="mx-vb"><span class="mx-vnum c2">9.3%</span><span class="mx-vlbl">2029</span></div></div><div class="mx-unit">% &nbsp;|&nbsp; Nominal GDP: FRW 16,355B to 37,413B</div><div class="mx-bar"><div class="mx-bf" data-w="72"></div></div></div>
+    <div class="mx-card rv"><div class="mx-pillar">Economic &nbsp;|&nbsp; MINECOFIN</div><div class="mx-indicator">GDP Per Capita</div><div class="mx-vals"><div class="mx-vb"><span class="mx-vnum c3">$1,040</span><span class="mx-vlbl">Baseline</span></div><div class="mx-vb"><span class="mx-vnum c1">$1,047</span><span class="mx-vlbl">2026</span></div><div class="mx-vb"><span class="mx-vnum c2">$1,369</span><span class="mx-vlbl">2029</span></div></div><div class="mx-unit">USD &nbsp;|&nbsp; National Accounts</div><div class="mx-bar"><div class="mx-bf" data-w="58"></div></div></div>
+    <div class="mx-card rv"><div class="mx-pillar">Economic &nbsp;|&nbsp; RDB</div><div class="mx-indicator">Private Investment Value</div><div class="mx-vals"><div class="mx-vb"><span class="mx-vnum c3">$2.2B</span><span class="mx-vlbl">Baseline</span></div><div class="mx-vb"><span class="mx-vnum c1">$3.1B</span><span class="mx-vlbl">2026</span></div><div class="mx-vb"><span class="mx-vnum c2">$4.6B</span><span class="mx-vlbl">2029</span></div></div><div class="mx-unit">Billion USD</div><div class="mx-bar"><div class="mx-bf" data-w="65"></div></div></div>
+    <div class="mx-card rv"><div class="mx-pillar">Economic &nbsp;|&nbsp; MIFOTRA</div><div class="mx-indicator">New Decent and Productive Jobs</div><div class="mx-vals"><div class="mx-vb"><span class="mx-vnum c3">1.37M</span><span class="mx-vlbl">Baseline</span></div><div class="mx-vb"><span class="mx-vnum c1">750K</span><span class="mx-vlbl">Mid Add.</span></div><div class="mx-vb"><span class="mx-vnum c2">1.25M</span><span class="mx-vlbl">End Add.</span></div></div><div class="mx-unit">Cumulative &nbsp;|&nbsp; 250,000 annually</div><div class="mx-bar"><div class="mx-bf" data-w="60"></div></div></div>
+    <div class="mx-card rv"><div class="mx-pillar">Economic &nbsp;|&nbsp; MININFRA</div><div class="mx-indicator">National Electricity Access</div><div class="mx-vals"><div class="mx-vb"><span class="mx-vnum c3">91%</span><span class="mx-vlbl">Baseline</span></div><div class="mx-vb"><span class="mx-vnum c1">96%</span><span class="mx-vlbl">2026</span></div><div class="mx-vb"><span class="mx-vnum c2">100%</span><span class="mx-vlbl">2029</span></div></div><div class="mx-unit">% Cells &nbsp;|&nbsp; 1,955 to 2,148 cells</div><div class="mx-bar"><div class="mx-bf" data-w="91"></div></div></div>
+    <div class="mx-card rv"><div class="mx-pillar">Economic &nbsp;|&nbsp; MINICOM</div><div class="mx-indicator">Exports of Goods and Services</div><div class="mx-vals"><div class="mx-vb"><span class="mx-vnum c3">$3,509M</span><span class="mx-vlbl">Baseline</span></div><div class="mx-vb"><span class="mx-vnum c1">$4,994M</span><span class="mx-vlbl">2026</span></div><div class="mx-vb"><span class="mx-vnum c2">$7,316M</span><span class="mx-vlbl">2029</span></div></div><div class="mx-unit">Million USD &nbsp;|&nbsp; NISR</div><div class="mx-bar"><div class="mx-bf" data-w="48"></div></div></div>
+    <div class="mx-card rv"><div class="mx-pillar">Social &nbsp;|&nbsp; MOH</div><div class="mx-indicator">Maternal Mortality Ratio</div><div class="mx-vals"><div class="mx-vb"><span class="mx-vnum c4">105</span><span class="mx-vlbl">Baseline</span></div><div class="mx-vb"><span class="mx-vnum c3">78</span><span class="mx-vlbl">2026</span></div><div class="mx-vb"><span class="mx-vnum c2">60</span><span class="mx-vlbl">2029</span></div></div><div class="mx-unit">Per 100,000 live births</div><div class="mx-bar"><div class="mx-bf" data-w="43"></div></div></div>
+    <div class="mx-card rv"><div class="mx-pillar">Governance &nbsp;|&nbsp; MINICT</div><div class="mx-indicator">Government Services Fully Digitised</div><div class="mx-vals"><div class="mx-vb"><span class="mx-vnum c4">11%</span><span class="mx-vlbl">Baseline</span></div><div class="mx-vb"><span class="mx-vnum c3">50%</span><span class="mx-vlbl">2026</span></div><div class="mx-vb"><span class="mx-vnum c2">100%</span><span class="mx-vlbl">2029</span></div></div><div class="mx-unit">End-to-end digitisation &nbsp;|&nbsp; IREMBO</div><div class="mx-bar"><div class="mx-bf" data-w="30"></div></div></div>
+    <div class="mx-card rv"><div class="mx-pillar">Social &nbsp;|&nbsp; MINEDUC</div><div class="mx-indicator">TVET Centres of Excellence</div><div class="mx-vals"><div class="mx-vb"><span class="mx-vnum c4">1</span><span class="mx-vlbl">Baseline</span></div><div class="mx-vb"><span class="mx-vnum c3">9</span><span class="mx-vlbl">2026</span></div><div class="mx-vb"><span class="mx-vnum c2">30</span><span class="mx-vlbl">2029</span></div></div><div class="mx-unit">TSS Centres &nbsp;|&nbsp; EMIS Reports</div><div class="mx-bar"><div class="mx-bf" data-w="20"></div></div></div>
+  </div>
+</section>
+<div class="hr"></div>
+
+<!-- ══════════════════════════════ AGENTS ══════════════════════════════ -->
+<section class="sec" id="agents">
+  <div class="rv">
+    <div class="sec-tag">Agent Network</div>
+    <h2 class="sec-h">A Nation That<br/>Thinks For Itself</h2>
+    <p class="sec-p">SEER deploys a coordinated network of autonomous agents, each governing a sector, all reporting to the central intelligence core.</p>
+  </div>
+  <div style="margin-top:68px;" class="rv">
+    <div class="aroot">SEER -- NATIONAL AI INTELLIGENCE CORE</div>
+    <div class="aline"></div>
+    <div class="albl">INFRASTRUCTURE AGENTS</div>
+    <div class="ar ar5">
+      <div class="ac"><span class="ac-ic">[ RUNWY ]</span><div class="ac-n">Runway</div><div class="ac-t">Infrastructure</div></div>
+      <div class="ac"><span class="ac-ic">[ TRMN ]</span><div class="ac-n">Terminal</div><div class="ac-t">Infrastructure</div></div>
+      <div class="ac"><span class="ac-ic">[ ENRGY ]</span><div class="ac-n">Energy Grid</div><div class="ac-t">Infrastructure</div></div>
+      <div class="ac"><span class="ac-ic">[ INDST ]</span><div class="ac-n">Industrial</div><div class="ac-t">Infrastructure</div></div>
+      <div class="ac"><span class="ac-ic">[ LGST ]</span><div class="ac-n">Logistics</div><div class="ac-t">Infrastructure</div></div>
+    </div>
+    <div class="albl">SECTOR AGENTS</div>
+    <div class="ar ar4">
+      <div class="ac"><span class="ac-ic">[ AIRL ]</span><div class="ac-n">Airlines</div><div class="ac-t">Sector</div></div>
+      <div class="ac"><span class="ac-ic">[ AGRI ]</span><div class="ac-n">Agriculture</div><div class="ac-t">Sector</div></div>
+      <div class="ac"><span class="ac-ic">[ HLTH ]</span><div class="ac-n">Health</div><div class="ac-t">Sector</div></div>
+      <div class="ac"><span class="ac-ic">[ DGTL ]</span><div class="ac-n">Digital Gov</div><div class="ac-t">Sector</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════ IMPACT ══════════════════════════════ -->
+<section class="sec" id="impact">
+  <div class="rv">
+    <div class="sec-tag">Strategic Impact</div>
+    <h2 class="sec-h">What Your Partnership<br/>Delivers for Rwanda</h2>
+    <p class="sec-p">SEER AMS is not a software product. It is Rwanda's national intelligence infrastructure, a platform asset with compounding value for government, sponsors, and development institutions.</p>
+  </div>
+  <div class="rg">
+    <div class="rc rv"><div class="rc-ico">01</div><div class="rc-t">De-Risk FRW 63,559B</div><p class="rc-b">Simulation-backed investment decisions reduce NST2 overruns and prevent misallocated capital. Every billion modelled before it is committed.</p><div class="rc-tag">CAPITAL EFFICIENCY</div></div>
+    <div class="rc rv"><div class="rc-ico">02</div><div class="rc-t">Rwanda as a Global Model</div><p class="rc-b">Rwanda becomes the first nation with an AI-native infrastructure intelligence platform. A global reference case for data-driven development governance.</p><div class="rc-tag">NATIONAL BRAND</div></div>
+    <div class="rc rv"><div class="rc-ico">03</div><div class="rc-t">Platform Compounding Returns</div><p class="rc-b">One architecture scales from Bugesera Airport to the full NST2 portfolio. Each new node multiplies early sponsor value across every domain.</p><div class="rc-tag">PLATFORM UPSIDE</div></div>
+    <div class="rc rv"><div class="rc-ico">04</div><div class="rc-t">Operational Resilience</div><p class="rc-b">Predictive maintenance, congestion prevention, and demand forecasting reduce operational costs continuously across the full infrastructure lifecycle.</p><div class="rc-tag">OPEX REDUCTION</div></div>
+    <div class="rc rv"><div class="rc-ico">05</div><div class="rc-t">Total Transparency</div><p class="rc-b">Sponsors, government, and development institutions gain live dashboards showing construction progress, sector performance, and NST2 milestone accuracy in real time.</p><div class="rc-tag">FULL VISIBILITY</div></div>
+    <div class="rc rv"><div class="rc-ico">06</div><div class="rc-t">First-Mover Advantage</div><p class="rc-b">No comparable national infrastructure intelligence platform exists in Africa. Early partnership establishes foundational IP position and institutional relationships that cannot be replicated.</p><div class="rc-tag">STRATEGIC POSITION</div></div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════ FINAL ══════════════════════════════ -->
+<div id="final">
+  <canvas id="fcanv"></canvas>
+  <div class="fi rv">
+    <div class="f-eye">The Digital Brain of National Development</div>
+    <h2 class="f-title">SEER AMS transforms development planning<br/>from static policy into<br/><em>living intelligence.</em></h2>
+    <p class="f-sub">Bugesera is the first node. What begins as an airport intelligence platform becomes the operating system of Rwanda's entire built environment, across every NST2 sector and every planning horizon.</p>
+    <div class="xn">
+      <div class="xnb">BUGESERA AIRPORT</div><div class="xnb">KIGALI CITY</div><div class="xnb">SOLAR PLANTS</div>
+      <div class="xnb">RAILWAY CORRIDORS</div><div class="xnb">INDUSTRIAL ZONES</div><div class="xnb">LOGISTICS NETWORKS</div><div class="xnb">NST2 ALL SECTORS</div>
+    </div>
+    <div style="display:flex;gap:16px;justify-content:center;flex-wrap:wrap;">
+      <button class="btn-a" onclick="alert('Contact ASC and Associates Ltd to request a full partnership proposal.')">Partner With Us</button>
+      <button class="btn-b" onclick="alert('Technical architecture brief available on request.')">Technical Brief</button>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════ FOOTER ══════════════════════════════ -->
+<footer>
+  <div class="ft-logo">SEER AMS</div>
+  <div class="ft-sub">National Infrastructure Intelligence Platform &nbsp;|&nbsp; Republic of Rwanda &nbsp;|&nbsp; NST2 2024&ndash;2029</div>
+  <div class="ft-ip">
+    <strong>Intellectual Property Notice</strong><br/>
+    The SEER Project Intelligence platform and all associated systems, methodologies, and intellectual property<br/>
+    are owned by <strong style="color:var(--c1);">Jimmÿ Gasana</strong> and operated by<br/>
+    <strong>ASC &amp; Associates Ltd</strong> &nbsp;&middot;&nbsp; <strong>Reelisway Ltd</strong> &nbsp;&middot;&nbsp; <strong>Seersbay Ltd</strong> &nbsp;&middot;&nbsp; <strong>:WANDAHILL:</strong><br/>
+    All rights reserved. This document is a confidential sponsor brief and is not for public distribution.
+  </div>
+</footer>
+<div class="fb">
+  <div>SEER AMS &nbsp;|&nbsp; IP: JIMMY GASANA &nbsp;|&nbsp; ASC &amp; ASSOCIATES LTD &nbsp;|&nbsp; REELISWAY LTD &nbsp;|&nbsp; SEERSBAY LTD &nbsp;|&nbsp; :WANDAHILL:</div>
+  <div style="color:var(--c1);">CONFIDENTIAL SPONSOR BRIEF &nbsp;|&nbsp; IER PITCH 2024&ndash;2035</div>
+</div>
+
+<script>
+// ══════════════════════════════════════════════════════
+//  GLOBAL CURSOR + PROGRESS
+// ══════════════════════════════════════════════════════
+const crEl=document.getElementById('cr'),croEl=document.getElementById('cro');
+let gcx=0,gcy=0,grx=0,gry=0;
+document.addEventListener('mousemove',e=>{gcx=e.clientX;gcy=e.clientY;crEl.style.left=gcx+'px';crEl.style.top=gcy+'px';});
+(function loop(){grx+=(gcx-grx)*.1;gry+=(gcy-gry)*.1;croEl.style.left=grx+'px';croEl.style.top=gry+'px';requestAnimationFrame(loop);})();
+const pbEl=document.getElementById('pb');
+window.addEventListener('scroll',()=>{const s=document.body.scrollHeight-innerHeight;pbEl.style.width=(s>0?window.scrollY/s*100:0)+'%';});
+
+// hover cursor scale
+document.querySelectorAll('a,button,.lr,.ac,.rc,.pc,.xnb,.mx-card,.sl-item,.yr-btn,.eb-btn').forEach(el=>{
+  el.addEventListener('mouseenter',()=>{crEl.style.transform='translate(-50%,-50%) scale(1.8)';croEl.style.width='46px';croEl.style.height='46px';});
+  el.addEventListener('mouseleave',()=>{crEl.style.transform='translate(-50%,-50%) scale(1)';croEl.style.width='28px';croEl.style.height='28px';});
+});
+
+// ══════════════════════════════════════════════════════
+//  SCROLL REVEAL
+// ══════════════════════════════════════════════════════
+const ro=new IntersectionObserver(e=>e.forEach(x=>{if(x.isIntersecting)x.target.classList.add('on');}),{threshold:.08});
+document.querySelectorAll('.rv,.rvl,.rvr').forEach(el=>ro.observe(el));
+
+// ══════════════════════════════════════════════════════
+//  COUNTERS
+// ══════════════════════════════════════════════════════
+function animNum(el){
+  const tgt=parseInt(el.dataset.target.replace(/,/g,''));
+  const pre=el.dataset.prefix||'',suf=el.dataset.suffix||'';
+  const dur=tgt>10000?2600:tgt>1000?2200:1200;
+  const st=performance.now();
+  (function t(now){
+    const p=Math.min((now-st)/dur,1),e2=1-Math.pow(1-p,3);
+    const v=Math.round(e2*tgt);
+    el.textContent=pre+(v>=1000?v.toLocaleString():v)+suf;
+    if(p<1)requestAnimationFrame(t);
+  })(performance.now());
+}
+const co=new IntersectionObserver(e=>e.forEach(x=>{if(x.isIntersecting&&x.target.dataset.target){animNum(x.target);co.unobserve(x.target);}}),{threshold:.4});
+document.querySelectorAll('[data-target]').forEach(el=>co.observe(el));
+
+// ══════════════════════════════════════════════════════
+//  HERO CANVAS
+// ══════════════════════════════════════════════════════
+(function(){
+  const c=document.getElementById('hcanv');if(!c)return;
+  const ctx=c.getContext('2d');let W,H,nodes=[];
+  function resize(){W=c.width=innerWidth;H=c.height=innerHeight;}
+  resize();window.addEventListener('resize',resize);
+  for(let i=0;i<80;i++)nodes.push({x:Math.random()*3000,y:Math.random()*1200,vx:(Math.random()-.5)*.3,vy:(Math.random()-.5)*.3,r:Math.random()*1.3+.3});
+  (function draw(){
+    ctx.clearRect(0,0,W,H);
+    nodes.forEach((n,i)=>{
+      nodes.forEach((m,j)=>{if(j>i){const d=Math.hypot(n.x-m.x,n.y-m.y);if(d<145){ctx.beginPath();ctx.moveTo(n.x,n.y);ctx.lineTo(m.x,m.y);ctx.strokeStyle=`rgba(0,180,255,${(1-d/145)*.09})`;ctx.lineWidth=.6;ctx.stroke();}}});
+      ctx.beginPath();ctx.arc(n.x,n.y,n.r,0,Math.PI*2);ctx.fillStyle='rgba(0,180,255,.4)';ctx.fill();
+      n.x+=n.vx;n.y+=n.vy;if(n.x<0||n.x>W)n.vx*=-1;if(n.y<0||n.y>H)n.vy*=-1;
+    });
+    requestAnimationFrame(draw);
+  })();
+})();
+
+// ══════════════════════════════════════════════════════
+//  FINAL CANVAS
+// ══════════════════════════════════════════════════════
+(function(){
+  const c=document.getElementById('fcanv');if(!c)return;
+  const ctx=c.getContext('2d');let W,H,pts=[];
+  function resize(){W=c.width=c.offsetWidth;H=c.height=c.offsetHeight;}
+  resize();window.addEventListener('resize',resize);
+  for(let i=0;i<55;i++)pts.push({x:Math.random()*2000,y:Math.random()*900,vx:(Math.random()-.5)*.22,vy:(Math.random()-.5)*.22});
+  (function draw(){
+    ctx.clearRect(0,0,W,H);ctx.fillStyle='rgba(0,20,45,.12)';ctx.fillRect(0,0,W,H);
+    pts.forEach((p,i)=>{
+      pts.forEach((q,j)=>{if(j>i){const d=Math.hypot(p.x-q.x,p.y-q.y);if(d<175){ctx.beginPath();ctx.moveTo(p.x,p.y);ctx.lineTo(q.x,q.y);ctx.strokeStyle=`rgba(0,180,255,${(1-d/175)*.11})`;ctx.lineWidth=.5;ctx.stroke();}}});
+      ctx.beginPath();ctx.arc(p.x,p.y,1.1,0,Math.PI*2);ctx.fillStyle='rgba(0,255,180,.45)';ctx.fill();
+      p.x+=p.vx;p.y+=p.vy;if(p.x<0||p.x>W)p.vx*=-1;if(p.y<0||p.y>H)p.vy*=-1;
+    });
+    requestAnimationFrame(draw);
+  })();
+})();
+
+// ══════════════════════════════════════════════════════
+//  DASHBOARD ACTIVATION
+// ══════════════════════════════════════════════════════
+const dob=new IntersectionObserver(e=>{
+  e.forEach(x=>{if(x.isIntersecting){
+    const bar=document.getElementById('nst-bar');if(bar)bar.style.width='68%';
+    let v=0;const iv=setInterval(()=>{v++;const el=document.getElementById('nst-pct');if(el)el.textContent=v+'%';if(v>=68)clearInterval(iv);},30);
+    document.querySelectorAll('.pf[data-w],.mb2f[data-w]').forEach(f=>{f.style.width=f.dataset.w+'%';});
+    document.querySelectorAll('.mbf[data-w]').forEach(f=>{f.style.width=f.dataset.w+'%';});
+    const arc=document.getElementById('garc'),gnum=document.getElementById('gnum'),gutl=document.getElementById('gutl');
+    const circ=2*Math.PI*40;
+    if(arc){const tgt=9.6;arc.style.strokeDasharray=circ;arc.style.strokeDashoffset=circ-(circ*(tgt/14));let n=0;const iv2=setInterval(()=>{n+=.1;if(gnum)gnum.textContent=n.toFixed(1);if(gutl)gutl.textContent=((n/14)*100).toFixed(0)+'%';if(n>=tgt)clearInterval(iv2);},40);}
+    dob.disconnect();
+  }});
+},{threshold:.05});
+const dEl=document.querySelector('.do');if(dEl)dob.observe(dEl);
+
+// Matrix bars
+const mxo=new IntersectionObserver(e=>e.forEach(x=>{if(x.isIntersecting)x.target.querySelectorAll('.mx-bf[data-w]').forEach(f=>{f.style.width=f.dataset.w+'%';});}),{threshold:.25});
+document.querySelectorAll('.mx-card').forEach(el=>mxo.observe(el));
+
+// ══════════════════════════════════════════════════════
+//  SMALL CHARTS (math exp, gdp, energy)
+// ══════════════════════════════════════════════════════
+function makeLineChart(canvasId,data,col1,col2,labels){
+  const c=document.getElementById(canvasId);if(!c)return;
+  const ctx=c.getContext('2d');
+  let drawn=0;
+  function draw(){
+    const W=c.width=c.offsetWidth;const H=c.height;
+    ctx.clearRect(0,0,W,H);
+    const pad=10,cW=W-pad*2,cH=H-pad*2;
+    const min=Math.min(...data)*.95,max=Math.max(...data)*1.05;
+    const pts=data.map((v,i)=>({x:pad+i/(data.length-1)*cW,y:pad+cH-(v-min)/(max-min)*cH}));
+    const pD=pts.slice(0,drawn+1);
+    if(pD.length>1){
+      const gr=ctx.createLinearGradient(0,pad,0,pad+cH);
+      gr.addColorStop(0,col1+'33');gr.addColorStop(1,col1+'00');
+      ctx.beginPath();ctx.moveTo(pD[0].x,pad+cH);pD.forEach(p=>ctx.lineTo(p.x,p.y));ctx.lineTo(pD[pD.length-1].x,pad+cH);ctx.fillStyle=gr;ctx.fill();
+      ctx.beginPath();ctx.moveTo(pD[0].x,pD[0].y);pD.slice(1).forEach(p=>ctx.lineTo(p.x,p.y));
+      ctx.strokeStyle=col1+'cc';ctx.lineWidth=1.8;ctx.stroke();
+    }
+    pD.forEach((p,i)=>{
+      ctx.beginPath();ctx.arc(p.x,p.y,2.2,0,Math.PI*2);ctx.fillStyle=col2;ctx.fill();
+      if(labels&&labels[i]){ctx.fillStyle='rgba(46,92,122,.75)';ctx.font='7px Share Tech Mono';ctx.textAlign='center';ctx.fillText(labels[i],p.x,H-1);}
+    });
+    if(drawn<data.length-1){drawn++;setTimeout(draw,90);}
+  }
+  const obs=new IntersectionObserver(e=>{if(e[0].isIntersecting){draw();obs.disconnect();}},{threshold:.4});
+  obs.observe(c);
+}
+makeLineChart('gdpc',[8.2,8.5,8.3,8.8,9.0,9.3],'#00b4ff','#00ffb4',['23','24','25','26','27','29']);
+makeLineChart('enc',[51,52,53,53.8,55,57,60],'#ffaa00','#ffaa00',null);
+(function(){
+  const r=0.082;const data=Array.from({length:12},(_,i)=>Math.round(Math.exp(r*i*1.5)*100)/100);
+  makeLineChart('exc',data,'#9f6fff','#9f6fff',['2024','','2026','','2028','','','','','','','2029']);
+})();
+
+// Fin chart
+function drawFinChart(){
+  const c=document.getElementById('fin-chart');if(!c)return;
+  const ctx=c.getContext('2d');
+  const W=c.width=c.offsetWidth||240;const H=c.height=60;
+  const data=[9502,10861,12270,14230,16695];
+  const years=['24/25','25/26','26/27','27/28','28/29'];
+  const max=Math.max(...data)*1.08;
+  ctx.clearRect(0,0,W,H);
+  const pad=4,cW=W-pad*2,cH=H-pad-12;
+  data.forEach((v,i)=>{
+    const bW=(cW/5)-3,bX=pad+i*(cW/5)+1.5;
+    const bH=(v/max)*cH,bY=cH-bH+pad;
+    const g=ctx.createLinearGradient(0,bY,0,bY+bH);
+    g.addColorStop(0,i===selectedYear?'rgba(0,180,255,.85)':'rgba(0,180,255,.35)');
+    g.addColorStop(1,'rgba(0,180,255,.04)');
+    ctx.fillStyle=g;ctx.fillRect(bX,bY,bW,bH);
+    if(i===selectedYear){ctx.strokeStyle='var(--c1)';ctx.lineWidth=.8;ctx.strokeRect(bX,bY,bW,bH);}
+    ctx.fillStyle='rgba(46,92,122,.8)';ctx.font='6px Share Tech Mono';ctx.textAlign='center';ctx.fillText(years[i],bX+bW/2,H-1);
+  });
+}
+setTimeout(()=>{drawFinChart();document.querySelectorAll('.fp-bf[data-w],.sl-bf[data-w]').forEach(f=>{f.style.width=f.dataset.w+'%';});},350);
+
+// ══════════════════════════════════════════════════════
+//  SECTOR DATA
+// ══════════════════════════════════════════════════════
+const FINANCING={
+  years:['2024/25','2025/26','2026/27','2027/28','2028/29'],
+  total:[9502,10861,12270,14230,16695],
+  pub:[5542,6208,6940,8037,9435],
+  priv:[3960,4653,5330,6193,7261],
+};
+let selectedYear=0;
+
+const SECTORS=[
+  {id:'agri',name:'Agriculture',sub:'Food Systems + Rural Resilience',col:'#00ffb4',px:.36,py:.54,size:27,budget:[1900,2170,2450,2840,3340],share:19,
+    indicators:[{k:'Maize yield target',v:'2.74 MT/Ha by 2029'},{k:'Irrigation area',v:'71,549 to 132,171 Ha'},{k:'Post-harvest loss',v:'13.8% reduced to 4.8%'},{k:'Fertiliser use',v:'70 to 94.6 Kg/Ha'},{k:'Credit to sector',v:'6% to 10% of loans'}],
+    baseline:{k:'Agri GDP growth',v:'1.7%'},target:{k:'End target',v:'6.5% growth'},
+    math:{formula:'y = a e^(rt)',label:'Maize: a=508,492 MT, r=11.4%, t=5yr',result:'Target: 874,337 MT by 2029'},
+    invest:'FRW 3,340B / yr by 2028/29',
+    investNote:'Domestic savings and credit expansion critical. Agricultural insurance to cover 75,841 Ha crops and 157,300 pigs and 474,506 poultry by 2029. Financial sector provides 70%+ of private NST2 financing.',
+    opportunity:'SME agri-finance, irrigation infrastructure, cold-chain logistics, crop insurance platforms.'},
+  {id:'energy',name:'Energy',sub:'Power Generation + Grid Expansion',col:'#ffaa00',px:.60,py:.36,size:25,budget:[1140,1300,1470,1700,2000],share:14,
+    indicators:[{k:'Electrification',v:'91% to 100% cells'},{k:'Renewable share',v:'51% to 60% of mix'},{k:'Productive use areas',v:'86% to 100%'},{k:'Hydro capacity',v:'Primary source'},{k:'Solar expansion',v:'Eastern Solar Farm'}],
+    baseline:{k:'Electricity access',v:'91% (1,955 cells)'},target:{k:'End target',v:'100% (2,148 cells)'},
+    math:{formula:'GDP = C + I + G + (X-M)',label:'Energy drives I (investment) and G (gov spend)',result:'Industry GDP: 10.2% to 10.6% growth'},
+    invest:'FRW 2,000B / yr by 2028/29',
+    investNote:'Lake Kivu methane, Rusumo hydro, Eastern Solar all active. Foreign financing provides 17% of public energy resources through concessional borrowing.',
+    opportunity:'Renewable energy bonds, off-grid solar, productive use financing, energy storage systems.'},
+  {id:'infra',name:'Infrastructure',sub:'Transport + Housing + Water',col:'#00b4ff',px:.50,py:.28,size:30,budget:[2280,2610,2940,3410,4010],share:27,
+    indicators:[{k:'Paved roads',v:'1,729 to 1,941 km'},{k:'Feeder roads',v:'4,187 to 4,797 km'},{k:'Water access',v:'80% to 100% villages'},{k:'Sanitation',v:'92% to 100% HHs'},{k:'Rural settlements',v:'65.4% to 81.1% planned'}],
+    baseline:{k:'Paved national roads',v:'1,729 km (2023)'},target:{k:'End target',v:'1,941 km by 2029'},
+    math:{formula:'y = a e^(rt)',label:'Road network: a=1,729km, r=2.3%, t=5yr',result:'Road capacity: +212km paved by 2029'},
+    invest:'FRW 4,010B / yr by 2028/29',
+    investNote:'Infrastructure is the largest NST2 public spend category. Project loans account for FRW 5,691B across 5 years. Bugesera International Airport is the flagship transport node.',
+    opportunity:'Transport infrastructure bonds, road PPP, housing development finance, WASH utility investment.'},
+  {id:'digital',name:'Digital Economy',sub:'Governance + ICT + Financial Inclusion',col:'#9f6fff',px:.66,py:.62,size:23,budget:[760,870,980,1140,1340],share:9,
+    indicators:[{k:'Gov services digitised',v:'11% to 100%'},{k:'Digital ID coverage',v:'0% to 100%'},{k:'Digital literacy',v:'53% to 100%'},{k:'Service quality',v:'78.28% to 90%+'},{k:'Audit compliance',v:'57% to 80%'}],
+    baseline:{k:'Digital services',v:'11% end-to-end'},target:{k:'End target',v:'100% fully digitised'},
+    math:{formula:'GDP = C + I + G + (X-M)',label:'Digital drives G efficiency and X via services exports',result:'National savings: 12.4% to 25.9% of GDP'},
+    invest:'FRW 1,340B / yr by 2028/29',
+    investNote:'FDI accounts for 70%+ of private foreign capital inflows. Digital economy unlocks SME credit access, youth and women financial inclusion, and cross-border trade efficiency.',
+    opportunity:'Fintech infrastructure, digital ID systems, e-government platforms, SME lending platforms.'},
+  {id:'mcs',name:'Manufacturing',sub:'Construction + Industry + Services',col:'#ff3d6e',px:.30,py:.34,size:25,budget:[1422,1911,2430,3140,3905],share:31,
+    indicators:[{k:'Industry GDP growth',v:'10.2% to 10.6%'},{k:'Services GDP growth',v:'11.2% to 10.2%'},{k:'Tourism revenue',v:'USD 620M to 1,100M'},{k:'MICE revenue',v:'USD 95M to 224M'},{k:'Mining exports',v:'USD 1.1B to 2.17B'}],
+    baseline:{k:'Private investment',v:'USD 2.2B (2023)'},target:{k:'End target',v:'USD 4.6B by 2029'},
+    math:{formula:'X = X0 (1 + g)^t',label:'Export growth: USD 3,509M, g=15.8%, t=5yr',result:'Export target: USD 7,316M by 2029'},
+    invest:'FRW 3,905B / yr by 2028/29',
+    investNote:'Manufacturing, Construction and Services together account for 31% of NST2 private investment. Domestic investments grow from FRW 2,518B to 5,863B over the period.',
+    opportunity:'SEZ manufacturing parks, construction materials, tourism infrastructure, export processing zones.'},
+];
+
+// ══════════════════════════════════════════════════════
+//  BUILD LEFT SECTOR LIST
+// ══════════════════════════════════════════════════════
+const slEl=document.getElementById('sector-list');
+SECTORS.forEach(s=>{
+  const d=document.createElement('div');d.className='sl-item';d.id='sli-'+s.id;
+  d.innerHTML=`<div class="sl-dot" style="background:${s.col};box-shadow:0 0 7px ${s.col};"></div><div><div class="sl-name" style="color:${s.col};">${s.name}</div><div class="sl-val">${s.sub}</div></div>`;
+  d.addEventListener('click',()=>selectSector(s));
+  d.addEventListener('mouseenter',()=>{crEl.style.background=s.col;croEl.style.borderColor=s.col+'70';});
+  d.addEventListener('mouseleave',()=>{crEl.style.background='var(--c1)';croEl.style.borderColor='rgba(0,180,255,0.4)';});
+  slEl.appendChild(d);
+  const bar=document.createElement('div');bar.className='sl-bar';
+  const bf=document.createElement('div');bf.className='sl-bf';bf.style.background=s.col;bf.dataset.w=s.share;
+  bar.appendChild(bf);slEl.appendChild(bar);
+});
+setTimeout(()=>document.querySelectorAll('.sl-bf[data-w]').forEach(f=>{f.style.width=f.dataset.w+'%';}),400);
+
+// ══════════════════════════════════════════════════════
+//  MAP CANVAS
+// ══════════════════════════════════════════════════════
+const mapC=document.getElementById('map-canvas');
+const ovC=document.getElementById('ov-canvas');
+const mCtx=mapC.getContext('2d');
+const oCtx=ovC.getContext('2d');
+let MW=0,MH=0;
+
+function resizeMC(){
+  const mc=document.getElementById('mcenter');
+  MW=mc.offsetWidth;MH=mc.offsetHeight;
+  mapC.width=MW;mapC.height=MH;
+  ovC.width=MW;ovC.height=MH;
+}
+resizeMC();window.addEventListener('resize',resizeMC);
+
+// Rwanda border - malleable points (normalized 0-1)
+let RW_PTS=[
+  [.44,.08],[.52,.06],[.60,.09],[.68,.10],[.76,.14],[.84,.18],
+  [.88,.26],[.86,.34],[.90,.40],[.88,.48],[.84,.54],[.86,.60],
+  [.82,.68],[.76,.74],[.70,.78],[.62,.82],[.54,.86],[.48,.88],
+  [.40,.86],[.32,.80],[.26,.74],[.20,.66],[.14,.58],[.12,.50],
+  [.14,.42],[.12,.34],[.16,.26],[.22,.20],[.28,.14],[.36,.10]
+];
+const RW_ORIG=RW_PTS.map(p=>[...p]);
+
+// State
+let activeSector=null,hovSector=null;
+let mapT=0;
+let particles2=[];
+let dataStreams=[];
+let editMode='move';
+let dragPtIdx=-1,dragOffX=0,dragOffY=0;
+let dragSectorIdx=-1,dragSectorOffX=0,dragSectorOffY=0;
+let hovPtIdx=-1;
+
+for(let i=0;i<55;i++)particles2.push({x:Math.random()*2000,y:Math.random()*1000,vx:(Math.random()-.5)*.15,vy:(Math.random()-.5)*.15,r:Math.random()*1.1+.3,col:`rgba(0,180,255,${Math.random()*.2+.04})`});
+
+function initStreams(){
+  dataStreams=[];
+  for(let i=0;i<SECTORS.length;i++){
+    for(let j=i+1;j<SECTORS.length;j++){
+      dataStreams.push({from:i,to:j,prog:Math.random(),speed:.003+Math.random()*.004});
+    }
+  }
+}
+initStreams();
+
+function sectorPos(s){return{x:s.px*MW,y:s.py*MH};}
+function rwPx(pt){return{x:pt[0]*MW,y:pt[1]*MH};}
+
+function drawMap(){
+  mCtx.clearRect(0,0,MW,MH);
+  // grid
+  mCtx.strokeStyle='rgba(0,180,255,.018)';mCtx.lineWidth=1;
+  for(let x=0;x<MW;x+=50){mCtx.beginPath();mCtx.moveTo(x,0);mCtx.lineTo(x,MH);mCtx.stroke();}
+  for(let y=0;y<MH;y+=50){mCtx.beginPath();mCtx.moveTo(0,y);mCtx.lineTo(MW,y);mCtx.stroke();}
+  // particles
+  particles2.forEach(p=>{
+    mCtx.beginPath();mCtx.arc(p.x%MW,p.y%MH,p.r,0,Math.PI*2);mCtx.fillStyle=p.col;mCtx.fill();
+    p.x+=p.vx;p.y+=p.vy;
+    if(p.x<0)p.x=MW;if(p.x>MW)p.x=0;if(p.y<0)p.y=MH;if(p.y>MH)p.y=0;
+  });
+  // Rwanda fill
+  const rp=RW_PTS.map(rwPx);
+  mCtx.beginPath();rp.forEach((p,i)=>{i===0?mCtx.moveTo(p.x,p.y):mCtx.lineTo(p.x,p.y);});mCtx.closePath();
+  const rg=mCtx.createRadialGradient(MW*.5,MH*.5,0,MW*.5,MH*.5,Math.max(MW,MH)*.42);
+  rg.addColorStop(0,'rgba(0,28,58,.42)');rg.addColorStop(1,'rgba(0,10,22,.14)');
+  mCtx.fillStyle=rg;mCtx.fill();
+  // border outer glow
+  mCtx.strokeStyle='rgba(0,180,255,.07)';mCtx.lineWidth=8;mCtx.stroke();
+  // border line
+  mCtx.strokeStyle='rgba(0,180,255,.3)';mCtx.lineWidth=1.5;mCtx.stroke();
+  // coordinate tick marks
+  rp.forEach((p,i)=>{if(i%3===0){mCtx.beginPath();mCtx.arc(p.x,p.y,1.4,0,Math.PI*2);mCtx.fillStyle='rgba(0,180,255,.35)';mCtx.fill();}});
+  // scan line
+  const scanY=((mapT*.4)%MH);
+  const sg=mCtx.createLinearGradient(0,scanY-18,0,scanY+18);
+  sg.addColorStop(0,'transparent');sg.addColorStop(.5,'rgba(0,180,255,.035)');sg.addColorStop(1,'transparent');
+  mCtx.fillStyle=sg;mCtx.fillRect(0,scanY-18,MW,36);
+  // labels
+  mCtx.fillStyle='rgba(0,180,255,.18)';mCtx.font='bold 10px Share Tech Mono';mCtx.textAlign='center';
+  mCtx.fillText('REPUBLIC OF RWANDA',MW*.52,MH*.93);
+  mCtx.fillStyle='rgba(0,180,255,.1)';mCtx.font='8px Share Tech Mono';
+  mCtx.fillText('NST2 INTELLIGENCE DOMAIN 2024-2029',MW*.52,MH*.97);
+
+  // edit mode: draw draggable border points
+  if(editMode==='edit'||editMode==='add'||editMode==='del'){
+    rp.forEach((p,i)=>{
+      const isHov=hovPtIdx===i;
+      mCtx.beginPath();
+      for(let k=0;k<4;k++){const a=Math.PI/2*k+Math.PI/4;mCtx.lineTo?mCtx.lineTo(p.x+6*Math.cos(a),p.y+6*Math.sin(a)):mCtx.moveTo(p.x+6*Math.cos(a),p.y+6*Math.sin(a));}
+      // diamond shape
+      mCtx.beginPath();
+      mCtx.moveTo(p.x,p.y-7);mCtx.lineTo(p.x+7,p.y);mCtx.lineTo(p.x,p.y+7);mCtx.lineTo(p.x-7,p.y);mCtx.closePath();
+      mCtx.fillStyle=isHov?'rgba(0,255,180,.5)':'rgba(0,180,255,.25)';mCtx.fill();
+      mCtx.strokeStyle=isHov?'#00ffb4':'rgba(0,180,255,.7)';mCtx.lineWidth=1;mCtx.stroke();
+    });
+  }
+}
+
+function drawOverlay(){
+  oCtx.clearRect(0,0,MW,MH);
+  const positions=SECTORS.map(s=>sectorPos(s));
+  // streams
+  dataStreams.forEach(ds=>{
+    const A=positions[ds.from],B=positions[ds.to];
+    const sA=SECTORS[ds.from],sB=SECTORS[ds.to];
+    const isAct=activeSector&&(activeSector.id===sA.id||activeSector.id===sB.id);
+    oCtx.beginPath();oCtx.moveTo(A.x,A.y);oCtx.lineTo(B.x,B.y);
+    oCtx.strokeStyle=`rgba(0,180,255,${isAct?.13:.05})`;oCtx.lineWidth=isAct?1.2:.6;oCtx.stroke();
+    ds.prog+=ds.speed*(isAct?2:1);if(ds.prog>1)ds.prog=0;
+    const px=A.x+(B.x-A.x)*ds.prog,py=A.y+(B.y-A.y)*ds.prog;
+    oCtx.beginPath();oCtx.arc(px,py,isAct?2.8:1.6,0,Math.PI*2);
+    oCtx.fillStyle=isAct?sA.col:'rgba(0,255,180,.65)';oCtx.fill();
+    if(isAct){oCtx.beginPath();oCtx.arc(px,py,5.5,0,Math.PI*2);oCtx.fillStyle=sA.col+'28';oCtx.fill();}
+  });
+  // nodes
+  SECTORS.forEach((s,idx)=>{
+    const p=sectorPos(s);
+    const isHov=hovSector&&hovSector.id===s.id;
+    const isAct=activeSector&&activeSector.id===s.id;
+    const pulse=Math.sin(mapT*.04+idx*1.2)*2.8;
+    const sz=s.size+(isAct?9:0)+(isHov?4:0)+pulse*.4;
+    // glow rings
+    for(let ri=3;ri>0;ri--){
+      const rSz=sz*(1.5+ri*.65);
+      oCtx.beginPath();oCtx.arc(p.x,p.y,rSz,0,Math.PI*2);
+      const alpha=Math.floor((isAct?.14:.05)*ri*22).toString(16).padStart(2,'0');
+      oCtx.fillStyle=s.col+alpha;oCtx.fill();
+    }
+    // hex
+    oCtx.beginPath();
+    for(let k=0;k<6;k++){const a=Math.PI/3*k-Math.PI/6;oCtx.lineTo(p.x+sz*Math.cos(a),p.y+sz*Math.sin(a));}
+    oCtx.closePath();oCtx.fillStyle=s.col+'1e';oCtx.fill();
+    oCtx.strokeStyle=isAct?s.col:s.col+'88';oCtx.lineWidth=isAct?2.2:1.4;oCtx.stroke();
+    // center dot
+    oCtx.beginPath();oCtx.arc(p.x,p.y,sz*.26,0,Math.PI*2);oCtx.fillStyle=s.col;oCtx.fill();
+    // crosshairs
+    if(isAct||isHov){
+      oCtx.strokeStyle=s.col+'55';oCtx.lineWidth=.7;
+      oCtx.beginPath();oCtx.moveTo(p.x-sz*4,p.y);oCtx.lineTo(p.x+sz*4,p.y);oCtx.stroke();
+      oCtx.beginPath();oCtx.moveTo(p.x,p.y-sz*4);oCtx.lineTo(p.x,p.y+sz*4);oCtx.stroke();
+      [[1,1],[-1,1],[1,-1],[-1,-1]].forEach(([sx,sy])=>{
+        const cs=sz*1.8;oCtx.beginPath();
+        oCtx.moveTo(p.x+sx*cs,p.y+sy*(cs-7));oCtx.lineTo(p.x+sx*cs,p.y+sy*cs);oCtx.lineTo(p.x+sx*(cs-7),p.y+sy*cs);
+        oCtx.strokeStyle=s.col+'80';oCtx.lineWidth=1.2;oCtx.stroke();
+      });
+    }
+    // label
+    oCtx.font=`${isAct?11:9}px Share Tech Mono`;
+    oCtx.fillStyle=isAct?s.col:s.col+'bb';oCtx.textAlign='center';
+    oCtx.fillText(s.name.toUpperCase(),p.x,p.y+sz+15);
+    if(isAct){oCtx.font='8px Share Tech Mono';oCtx.fillStyle=s.col+'80';oCtx.fillText(`FRW ${s.budget[selectedYear].toLocaleString()}B`,p.x,p.y+sz+27);}
+  });
+  mapT++;
+}
+
+(function animLoop(){drawMap();drawOverlay();requestAnimationFrame(animLoop);})();
+
+// ══════════════════════════════════════════════════════
+//  MAP MOUSE INTERACTION
+// ══════════════════════════════════════════════════════
+const ttEl=document.getElementById('ntt');
+
+function getCanvasCoords(e){
+  const r=ovC.getBoundingClientRect();
+  return{x:e.clientX-r.left,y:e.clientY-r.top};
+}
+function getSectorAt(x,y){
+  let found=null;
+  SECTORS.forEach(s=>{const p=sectorPos(s);if(Math.hypot(x-p.x,y-p.y)<s.size+14)found=s;});
+  return found;
+}
+function getPtAt(x,y){
+  let found=-1,minD=14;
+  RW_PTS.forEach((pt,i)=>{const d=Math.hypot(x-pt[0]*MW,y-pt[1]*MH);if(d<minD){minD=d;found=i;}});
+  return found;
+}
+function getEdgeAt(x,y){
+  // find nearest edge midpoint for "add point"
+  let minD=16,foundI=-1;
+  for(let i=0;i<RW_PTS.length;i++){
+    const j=(i+1)%RW_PTS.length;
+    const mx=(RW_PTS[i][0]+RW_PTS[j][0])*.5*MW;
+    const my=(RW_PTS[i][1]+RW_PTS[j][1])*.5*MH;
+    const d=Math.hypot(x-mx,y-my);
+    if(d<minD){minD=d;foundI=i;}
+  }
+  return foundI;
+}
+
+ovC.addEventListener('mousemove',e=>{
+  const{x,y}=getCanvasCoords(e);
+
+  // dragging border point
+  if(dragPtIdx>=0){
+    RW_PTS[dragPtIdx]=[Math.max(0.02,Math.min(.98,(x+dragOffX)/MW)),Math.max(0.02,Math.min(.98,(y+dragOffY)/MH))];
+    return;
+  }
+  // dragging sector node
+  if(dragSectorIdx>=0){
+    SECTORS[dragSectorIdx].px=Math.max(.05,Math.min(.95,(x+dragSectorOffX)/MW));
+    SECTORS[dragSectorIdx].py=Math.max(.05,Math.min(.95,(y+dragSectorOffY)/MH));
+    return;
+  }
+
+  if(editMode==='edit'||editMode==='add'||editMode==='del'){
+    hovPtIdx=getPtAt(x,y);
+  }
+
+  const s=getSectorAt(x,y);
+  hovSector=s;
+  if(s){
+    crEl.style.background=s.col;croEl.style.borderColor=s.col+'70';
+    ttEl.innerHTML=`<span class="ntt-h">${s.name.toUpperCase()} SECTOR</span>
+      <div class="ntt-r"><span class="ntt-k">SUBSECTOR</span><span>${s.sub}</span></div>
+      <div class="ntt-r"><span class="ntt-k">NST2 SHARE</span><span style="color:${s.col}">${s.share}%</span></div>
+      <div class="ntt-r"><span class="ntt-k">${FINANCING.years[selectedYear]}</span><span style="color:${s.col}">FRW ${s.budget[selectedYear].toLocaleString()}B</span></div>
+      <div class="ntt-r"><span class="ntt-k">CLICK</span><span style="color:${s.col}">FULL ANALYSIS</span></div>`;
+    ttEl.style.opacity='1';
+    const tx=Math.min(e.clientX+16,innerWidth-220);
+    ttEl.style.left=tx+'px';ttEl.style.top=(e.clientY-18)+'px';
+  } else {
+    crEl.style.background='var(--c1)';croEl.style.borderColor='rgba(0,180,255,0.4)';
+    ttEl.style.opacity='0';
+  }
+});
+
+ovC.addEventListener('mousedown',e=>{
+  const{x,y}=getCanvasCoords(e);
+  if(editMode==='edit'){
+    const idx=getPtAt(x,y);
+    if(idx>=0){dragPtIdx=idx;dragOffX=RW_PTS[idx][0]*MW-x;dragOffY=RW_PTS[idx][1]*MH-y;return;}
+  }
+  if(editMode==='add'){
+    const edgeI=getEdgeAt(x,y);
+    if(edgeI>=0){
+      const j=(edgeI+1)%RW_PTS.length;
+      const np=[(RW_PTS[edgeI][0]+RW_PTS[j][0])*.5,(RW_PTS[edgeI][1]+RW_PTS[j][1])*.5];
+      RW_PTS.splice(edgeI+1,0,np);
+      return;
+    }
+  }
+  if(editMode==='del'){
+    const idx=getPtAt(x,y);
+    if(idx>=0&&RW_PTS.length>6){RW_PTS.splice(idx,1);hovPtIdx=-1;return;}
+  }
+  if(editMode==='move'){
+    const s=getSectorAt(x,y);
+    if(s){
+      const idx=SECTORS.indexOf(s);dragSectorIdx=idx;
+      dragSectorOffX=s.px*MW-x;dragSectorOffY=s.py*MH-y;
+    }
+  }
+});
+
+document.addEventListener('mouseup',()=>{dragPtIdx=-1;dragSectorIdx=-1;});
+ovC.addEventListener('mouseleave',()=>{hovSector=null;ttEl.style.opacity='0';hovPtIdx=-1;});
+
+ovC.addEventListener('click',e=>{
+  if(dragPtIdx>=0||dragSectorIdx>=0)return;
+  const{x,y}=getCanvasCoords(e);
+  const s=getSectorAt(x,y);
+  if(s&&editMode==='move')selectSector(s);
+});
+
+// ══════════════════════════════════════════════════════
+//  EDIT MODE + RESET
+// ══════════════════════════════════════════════════════
+function setMode(m,btn){
+  editMode=m;
+  document.querySelectorAll('.eb-btn').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  const hint=document.getElementById('map-hint');
+  const msgs={
+    move:'DRAG SECTOR NODES TO REPOSITION &nbsp;|&nbsp; CLICK TO SELECT',
+    edit:'DRAG BORDER POINTS TO RESHAPE RWANDA OUTLINE',
+    add:'CLICK NEAR ANY BORDER EDGE MIDPOINT TO ADD A VERTEX',
+    del:'CLICK ANY BORDER POINT TO DELETE IT'
+  };
+  hint.textContent=msgs[m]||'';
+}
+function resetBorder(){RW_PTS=RW_ORIG.map(p=>[...p]);}
+
+// ══════════════════════════════════════════════════════
+//  YEAR SELECTOR
+// ══════════════════════════════════════════════════════
+function setYear(idx,btn){
+  selectedYear=idx;
+  document.querySelectorAll('.yr-btn').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  drawFinChart();
+  if(activeSector)renderDetail(activeSector);
+}
+
+// ══════════════════════════════════════════════════════
+//  SELECT SECTOR
+// ══════════════════════════════════════════════════════
+function selectSector(s){
+  activeSector=s;
+  document.querySelectorAll('.sl-item').forEach(el=>el.classList.remove('active'));
+  const sl=document.getElementById('sli-'+s.id);if(sl)sl.classList.add('active');
+  ttEl.style.opacity='0';
+  renderDetail(s);
+}
+
+function renderDetail(s){
+  const dp=document.getElementById('detail-panel');
+  const yBud=s.budget[selectedYear];
+  const totBud=s.budget.reduce((a,b)=>a+b,0);
+  dp.innerHTML=`
+    <div class="dp-sname" style="color:${s.col}">${s.name.toUpperCase()}</div>
+    <div class="dp-ssub">${s.sub}</div>
+    <div class="dp-tag" style="color:${s.col};border-color:${s.col}40;">${s.share}% OF NST2 BUDGET</div>
+    <div class="dp-invest">
+      <div class="dp-invest-title">INVESTMENT INTELLIGENCE</div>
+      <div class="dp-invest-num" style="color:${s.col}">FRW ${yBud.toLocaleString()}B</div>
+      <div class="dp-invest-sub" style="color:${s.col}80">${FINANCING.years[selectedYear]} PROJECTION</div>
+      <div class="dp-invest-note">${s.investNote}</div>
+    </div>
+    <div class="dp-section" style="margin-top:14px;">
+      <div class="dp-stitle">5-YEAR BUDGET TRAJECTORY</div>
+      ${s.budget.map((v,i)=>{const pct=Math.round(v/Math.max(...s.budget)*100);return`<div class="dp-bw"><div class="dp-blbl"><span>${FINANCING.years[i]}</span><span style="color:${s.col}">FRW ${v.toLocaleString()}B</span></div><div class="dp-bt"><div class="dp-bf" data-w="${pct}" style="background:${i===selectedYear?s.col:s.col+'50'};"></div></div></div>`;}).join('')}
+    </div>
+    <div class="dp-section">
+      <div class="dp-stitle">KEY NST2 INDICATORS</div>
+      ${s.indicators.map(ind=>`<div class="dp-kv"><span class="dp-k">${ind.k}</span><span class="dp-v" style="color:${s.col}">${ind.v}</span></div>`).join('')}
+    </div>
+    <div class="dp-section">
+      <div class="dp-stitle">PERFORMANCE TARGETS</div>
+      <div class="dp-kv"><span class="dp-k">${s.baseline.k}</span><span class="dp-v" style="color:var(--c4)">${s.baseline.v}</span></div>
+      <div class="dp-kv"><span class="dp-k">${s.target.k}</span><span class="dp-v" style="color:${s.col}">${s.target.v}</span></div>
+    </div>
+    <div class="dp-math">
+      <div class="dp-mf" style="color:${s.col}">${s.math.formula}</div>
+      <div class="dp-md">${s.math.label}<br/>${s.math.result}</div>
+    </div>
+    <div class="dp-section">
+      <div class="dp-stitle">SPONSOR OPPORTUNITY</div>
+      <div style="font-family:'Share Tech Mono',monospace;font-size:9px;color:var(--tx);line-height:1.8;letter-spacing:.5px;">${s.opportunity}</div>
+    </div>
+    <div class="dp-section">
+      <div class="dp-stitle">5-YEAR TOTAL</div>
+      <div class="dp-kv"><span class="dp-k">Sector Total</span><span class="dp-v" style="color:${s.col}">FRW ${totBud.toLocaleString()}B</span></div>
+      <div class="dp-kv"><span class="dp-k">NST2 Total</span><span class="dp-v">FRW 63,559B</span></div>
+    </div>`;
+  setTimeout(()=>{dp.querySelectorAll('.dp-bf[data-w]').forEach(f=>{f.style.width=f.dataset.w+'%';});},80);
+}
+
+// keyboard nav
+document.addEventListener('keydown',e=>{
+  const idx=SECTORS.findIndex(s=>activeSector&&s.id===activeSector.id);
+  if(e.key==='ArrowDown'||e.key==='ArrowRight')selectSector(SECTORS[(idx+1)%SECTORS.length]);
+  else if(e.key==='ArrowUp'||e.key==='ArrowLeft')selectSector(SECTORS[(idx-1+SECTORS.length)%SECTORS.length]);
+  else if(e.key==='Escape'){
+    activeSector=null;
+    document.querySelectorAll('.sl-item').forEach(el=>el.classList.remove('active'));
+    document.getElementById('detail-panel').innerHTML=`<div class="dp-idle"><div class="dp-idle-ic">SEER</div><div>SELECT A SECTOR NODE<br/>ON THE MAP<br/><br/><span style="color:var(--c2);">5 SECTORS ACTIVE</span><br/><br/><span style="color:var(--txd);">DRAG BORDER TO RESHAPE<br/>RWANDA MAP OUTLINE</span></div></div>`;
+  }
+});
+</script>
+</body>
+</html>
